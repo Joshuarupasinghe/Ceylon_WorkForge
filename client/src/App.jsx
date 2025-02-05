@@ -1,11 +1,16 @@
-import React from 'react'
+// App.js
+import { Route, Routes } from 'react-router-dom';
+import LoginPage from './pages/login';
+// Ensure correct path and capitalization
 
 function App() {
   return (
-    <div><h1 className="text-3xl font-bold underline">
-    Hello world!
-  </h1></div>
-  )
+    <div>
+      <Routes>
+        <Route path="/auth/login" element={<LoginPage />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
