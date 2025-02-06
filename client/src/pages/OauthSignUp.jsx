@@ -1,6 +1,6 @@
 import { FcGoogle } from "react-icons/fc";
 
-export default function SignupPage() {
+export default function OauthSignUp() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl">
