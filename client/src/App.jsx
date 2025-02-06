@@ -1,10 +1,9 @@
-// App.js
+
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/login';  
-import  OauthSignUp from './pages/OauthSignUp';  
-import  SignUp from './pages/SignUp';  
-
-// Ensure correct path and capitalization
+import OauthSignUp from './pages/OauthSignUp';  
+import SignUp from './pages/SignUp'; 
+import ProfileForm from './pages/ProfileForm'; 
 
 function App() {
   return (
@@ -13,6 +12,7 @@ function App() {
         <Route path="/oauth2-callback" element={<OauthSignUp />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<ProfileForm />} />
       </Routes>
     </div>
   );
