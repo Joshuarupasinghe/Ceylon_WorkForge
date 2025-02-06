@@ -4,6 +4,8 @@ import LoginPage from './pages/login';
 import OauthSignUp from './pages/OauthSignUp';  
 import SignUp from './pages/SignUp'; 
 import ProfileForm from './pages/ProfileForm'; 
+import HomePage from './pages/HomePage'; 
+
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<ProfileForm />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </div>
   );
