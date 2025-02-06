@@ -48,4 +48,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/signup', async (req, res) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(500).json({ message: 'Database connection not ready' });
+  }
+  // ... rest of your signup code
+});
+
 module.exports = router;
