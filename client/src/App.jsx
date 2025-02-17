@@ -5,6 +5,7 @@ import OauthSignUp from './pages/OauthSignUp';
 import SignUp from './pages/SignUp'; 
 import ProfileForm from './pages/ProfileForm'; 
 import HomePage from './pages/HomePage'; 
+import CategorySection from './pages/CategorySection';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<ProfileForm />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/Category" element={<CategorySection />} />
       </Routes>
     </div>
   );
