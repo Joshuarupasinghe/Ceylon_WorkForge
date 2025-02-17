@@ -29,7 +29,7 @@ const HomePage = () => {
     { id: 3, title: "SEO", imageUrl: "/imges/SEO.png", color: "bg-green-500" },
     { id: 4, title: "VIDEO EDITING", imageUrl: "/imges/Video Editing.png", color: "bg-indigo-600" },
     { id: 5, title: "MOBILE APPS", imageUrl: "/imges/mobile dev.png", color: "bg-pink-500" },
-    { id: 6, title: "UI/UX DESIGN", imageUrl: "/imges/Ui:Ux .png", color: "bg-yellow-500" },
+    { id: 6, title: "UI/UX DESIGN", imageUrl: "/imges/UiUx .png", color: "bg-yellow-500" },
     { id: 7, title: "CONTENT WRITING", imageUrl: "/imges/content writing.png", color: "bg-teal-500" },
     { id: 8, title: "DIGITAL MARKETING", imageUrl: "/imges/Digital marketing.png", color: "bg-orange-500" }
   ];
@@ -86,7 +86,7 @@ const HomePage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 Ceylon WorkForce
               </h1>
-              <p className="text-xl mb-6">FREELANCING MADE EASier!</p>
+              <p className="text-xl mb-6">FREELANCING MADE EASY!</p>
               <div className="relative">
                 <input
                   type="text"
