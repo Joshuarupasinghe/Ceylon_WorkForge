@@ -15,7 +15,7 @@ app.use(cors());
 // app.get('/', (req, res) => {
 //   res.send('Backend is running');
 // });
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

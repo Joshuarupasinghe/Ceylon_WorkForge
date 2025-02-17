@@ -86,7 +86,7 @@ const HomePage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 Ceylon WorkForce
               </h1>
-              <p className="text-xl mb-6">FREELANCING MADE EASY!</p>
+              <p className="text-xl mb-6">FREELANCING MADE EASier!</p>
               <div className="relative">
                 <input
                   type="text"
