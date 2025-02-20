@@ -1,13 +1,45 @@
 import { useState } from "react";
 import { User, Lock } from "lucide-react";
+import { authService } from "../services/api";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    alert(`Username: ${username}\nPassword: ${password}`);
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await authService.login(formData);
+      
+      // Store the token and user data in localStorage
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      
+      // Redirect to profile page after successful login
+      window.location.href = "/home";
+    } catch (err) {
+      setError(
+        err.response?.data?.message || 
+        err.message || 
+        "An error occurred during login"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,19 +64,27 @@ export default function LoginPage() {
           <div className="w-full">
             <h2 className="text-4xl font-bold text-gray-700 text-center mb-4">Log in</h2>
             <p className="text-center text-lg text-gray-500 mb-8">
-              Type your username and password to sign in
+              Type your email and password to sign in
             </p>
 
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                {error}
+              </div>
+            )}
+
             <form onSubmit={handleLogin} className="space-y-6">
-              {/* Username Input */}
+              {/* Email Input */}
               <div className="relative">
                 <User className="absolute top-3 left-4 text-gray-500" size={24} />
                 <input
                   className="pl-14 w-full border rounded-xl p-3 text-lg focus:outline-green-500"
-                  type="text"
-                  value={username}
-                  placeholder="Username"
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  placeholder="Email"
+                  onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -54,9 +94,11 @@ export default function LoginPage() {
                 <input
                   className="pl-14 w-full border rounded-xl p-3 text-lg focus:outline-green-500"
                   type="password"
-                  value={password}
+                  name="password"
+                  value={formData.password}
                   placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -67,17 +109,18 @@ export default function LoginPage() {
               {/* Sign-in Button */}
               <button
                 type="submit"
-                className="w-full bg-[#00ADB5] hover:bg-opacity-90 text-white py-3 text-lg rounded-xl"
+                disabled={loading}
+                className="w-full bg-[#00ADB5] hover:bg-opacity-90 text-white py-3 text-lg rounded-xl disabled:opacity-50"
               >
-                Sign In
+                {loading ? "Signing in..." : "Log In"}
               </button>
 
               {/* Sign-up Link */}
               <p className="text-md text-center mt-4 text-gray-600">
-                Don’t have an account?{" "}
-                <span className="text-[#00ADB5] hover:underline cursor-pointer">
+                Don't have an account?{" "}
+                <a href="/signup" className="text-[#00ADB5] hover:underline cursor-pointer">
                   Sign Up
-                </span>
+                </a>
               </p>
             </form>
           </div>

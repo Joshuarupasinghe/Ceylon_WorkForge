@@ -1,19 +1,38 @@
-const mongoose = require('mongoose');
+const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
+const mongoose = require('mongoose'); // Add this
+const authRoutes = require('./routes/auth');
 
+// Load environment variables
 dotenv.config();
 
-async function connectDB() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connection established successfully');
-  } catch (error) {
-    console.error('Failed to connect to MongoDB:', error);
-    process.exit(1);
-  }
-}
+const app = express();
 
-module.exports = connectDB;
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Improved MongoDB connection with error handling
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!', error: err.message });
+});
+
+// Routes
+app.use('/auth', authRoutes);
+
+// Basic route for testing
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
