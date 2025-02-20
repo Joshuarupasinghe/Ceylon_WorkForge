@@ -6,6 +6,10 @@ import SignUp from './pages/SignUp';
 import ProfileForm from './pages/ProfileForm'; 
 import HomePage from './pages/HomePage'; 
 import CategorySection from './pages/CategorySection';
+import NavListMenu from './pages/NavListMenu';
+
+
+
 
 
 function App() {
@@ -18,6 +22,8 @@ function App() {
         <Route path="/profile" element={<ProfileForm />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/Category" element={<CategorySection />} />
+        <Route path="/Nav" element={<NavListMenu />} />
+      
       </Routes>
     </div>
   );
