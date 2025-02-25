@@ -24,17 +24,17 @@ export default function LoginPage() {
 
     try {
       const response = await authService.login(formData);
-      
+
       // Store the token and user data in localStorage
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      
+
       // Redirect to profile page after successful login
       window.location.href = "/home";
     } catch (err) {
       setError(
-        err.response?.data?.message || 
-        err.message || 
+        err.response?.data?.message ||
+        err.message ||
         "An error occurred during login"
       );
     } finally {
@@ -117,11 +117,12 @@ export default function LoginPage() {
 
               {/* Sign-up Link */}
               <p className="text-md text-center mt-4 text-gray-600">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a href="/signup" className="text-[#00ADB5] hover:underline cursor-pointer">
                   Sign Up
                 </a>
               </p>
+
             </form>
           </div>
         </div>
