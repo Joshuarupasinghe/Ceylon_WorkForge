@@ -1,7 +1,7 @@
-import { lazy, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '../services/api';
-import { LassoSelect } from 'lucide-react';
+
 
 export default function AuthCallback() {
   const [searchParams] = useSearchParams();
@@ -30,7 +30,7 @@ export default function AuthCallback() {
           lastName: response.data.user.lastName || '',
           email: response.data.user.email || '',
           gender: response.data.user.gender || '',
-          
+
           role: role || response.data.user.role,
         };
         
