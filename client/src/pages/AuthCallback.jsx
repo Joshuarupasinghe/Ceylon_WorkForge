@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '../services/api';
+import { LassoSelect } from 'lucide-react';
 
 export default function AuthCallback() {
   const [searchParams] = useSearchParams();
@@ -24,9 +25,13 @@ export default function AuthCallback() {
       try {
         const response = await authService.validateAuthCallback(token);
         const userData = {
-          id: userId,
-          ...response.data.user,
-          role
+          id: userId || response.data.user.id,
+          firstName: response.data.user.firstName || '',
+          lastName: response.data.user.lastName || '',
+          email: response.data.user.email || '',
+          gender: response.data.user.gender || '',
+          
+          role: role || response.data.user.role,
         };
         
         localStorage.setItem('user', JSON.stringify(userData));

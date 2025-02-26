@@ -81,6 +81,50 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   });
 }
 
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `${process.env.SERVER_URL || 'http://localhost:5001'}/auth/google/callback`
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      // Check if user already exists
+      const existingUser = await User.findOne({ email: profile.emails[0].value });
+      
+      // Get profile picture URL
+      const profilePicture = profile.photos && profile.photos.length > 0 
+        ? profile.photos[0].value 
+        : null;
+      
+      if (existingUser) {
+        // Update profile picture if not already set
+        if (profilePicture && !existingUser.profilePicture) {
+          existingUser.profilePicture = profilePicture;
+          await existingUser.save();
+        }
+        return done(null, existingUser);
+      }
+      
+      // Create new user from Google profile
+      const newUser = new User({
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        email: profile.emails[0].value,
+        password: require('crypto').randomBytes(16).toString('hex'),
+        company: profile.displayName,
+        role: 'client',
+        googleId: profile.id,
+        profilePicture: profilePicture
+      });
+      
+      await newUser.save();
+      return done(null, newUser);
+    } catch (error) {
+      return done(error);
+    }
+  }
+));
+
 // Signup Route
 router.post('/signup', async (req, res) => {
   try {
@@ -183,7 +227,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Token validation endpoint - NEW ENDPOINT
+// Token validation endpoint
 router.get('/user/me', async (req, res) => {
   try {
     // Get token from Authorization header
@@ -205,15 +249,18 @@ router.get('/user/me', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     
-    // Return user data
+    // Return user data with all needed fields
     res.json({
       user: {
         id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        company: user.company,
-        role: user.role,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        company: user.company || '',
+        role: user.role || 'client',
+        gender: user.gender || '',
+        // Include other user fields that might be populated from Google Auth
+        // or the signup process
         createdAt: user.createdAt
       }
     });
