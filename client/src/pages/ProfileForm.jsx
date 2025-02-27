@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState, useEffect } from 'react';
 
 const ProfileForm = () => {
   const jobCategories = {
@@ -66,6 +66,27 @@ const ProfileForm = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [formErrors, setFormErrors] = useState({});
 
+  // Load user data from localStorage on component mount
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        setFormData(prevData => ({
+          ...prevData,
+          firstName: parsedUserData.firstName || prevData.firstName,
+          lastName: parsedUserData.lastName || prevData.lastName,
+          email: parsedUserData.email || prevData.email,
+          // Only populate these fields if they exist in user data
+          gender: parsedUserData.gender || prevData.gender,
+          contactNumber: parsedUserData.contactNumber || prevData.contactNumber,
+        }));
+      } catch (error) {
+        console.error("Error parsing user data from localStorage:", error);
+      }
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -106,29 +127,44 @@ const ProfileForm = () => {
     return errors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      console.log("Form Data Submitted:", formData);
-      alert("Form submitted successfully!");
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        gender: "",
-        contactNumber: "",
-        education: "",
-        field: "",
-        certificates: "",
-        service: "",
-        subCategory: "",
-        specialNotes: "",
-        profileImage: null
-      });
-      setImagePreview(null);
+      try {
+        console.log("Form Data Submitted:", formData);
+        
+        // Here you would typically send this data to your backend
+        // const response = await api.updateUserProfile(formData);
+        
+        // Update the user data in localStorage with the new values
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        const updatedUserData = {
+          ...userData,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          gender: formData.gender,
+          contactNumber: formData.contactNumber,
+          education: formData.education,
+          field: formData.field,
+          certificates: formData.certificates,
+          service: formData.service,
+          subCategory: formData.subCategory,
+          specialNotes: formData.specialNotes,
+          // Don't store the image in localStorage, just a reference or flag
+          hasProfileImage: !!formData.profileImage
+        };
+        
+        localStorage.setItem('user', JSON.stringify(updatedUserData));
+        
+        alert("Profile updated successfully!");
+      } catch (error) {
+        console.error("Error submitting profile:", error);
+        alert("There was an error updating your profile. Please try again.");
+      }
     }
   };
 
@@ -243,6 +279,7 @@ const ProfileForm = () => {
           {formErrors.contactNumber && <p className="text-red-500 text-sm mt-1">{formErrors.contactNumber}</p>}
         </div>
 
+        {/* Rest of form fields unchanged */}
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-700">Education</label>
           <input

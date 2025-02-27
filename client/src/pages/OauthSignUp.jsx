@@ -4,7 +4,7 @@ import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function OauthSignUp() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const handleEmailSignup = () => {
     navigate('/signup');
