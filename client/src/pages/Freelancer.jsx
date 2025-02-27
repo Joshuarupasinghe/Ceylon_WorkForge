@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { Home, FileText, CreditCard, BarChart2, Settings, Bell, Search, Camera, Send, Menu, X } from 'lucide-react';
+import BillingSettings from '../components/BillingSettings';
+
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -86,219 +88,107 @@ const AdminDashboard = () => {
     </div>
   );
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Mobile Menu Button */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 bg-gray-800 rounded-lg"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      <div className="flex flex-col md:flex-row">
-        {/* Sidebar - Mobile Drawer */}
-        <div className={`
-          fixed md:relative w-64 h-screen bg-gray-800 p-4 z-40
-          transform transition-transform duration-300 ease-in-out
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}>
-          <div className="space-y-2 mt-12 md:mt-0">
-            <SidebarLink icon={Home} label="Home" active={activeTab === 'home'} />
-            <SidebarLink icon={FileText} label="Projects" active={activeTab === 'projects'} />
-            <SidebarLink icon={CreditCard} label="Billings" active={activeTab === 'billings'} />
-            <SidebarLink icon={BarChart2} label="Stats" active={activeTab === 'stats'} />
-            <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} />
-            <SidebarLink icon={Send} label="Chat" active={activeTab === 'chat'} />
+  // Render the content for the active tab
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <StatCard title="Current Jobs" value={statsData.currentJobs} percentage={100} />
+            <StatCard title="Skilled Users" value={statsData.skilledUsers} percentage={100} />
+            <StatCard title="Current Users" value={statsData.currentUsers} percentage={100} />
+            <StatCard 
+              title="Sales" 
+              subtitle="Total sales today"
+              value={`$${statsData.sales}`} 
+              percentage={100} 
+            />
+            <StatCard 
+              title="Cancellation"
+              value={statsData.cancellation} 
+              percentage={100}
+              trend="down" 
+            />
+            <StatCard 
+              title="User Satisfaction"
+              value={statsData.satisfaction} 
+              percentage={100} 
+            />
           </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 md:ml-64 p-4 md:p-8 mt-12 md:mt-0">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-4">
-              <div 
-                className="relative w-12 h-12 rounded-full overflow-hidden cursor-pointer group"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <img
-                  src={profileImage || "/api/placeholder/48/48"}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
+        );
+      case 'stats':
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Object.entries(trafficData).map(([key, value]) => (
+                <StatCard
+                  key={key}
+                  title={key.replace(/([A-Z])/g, ' $1').trim()}
+                  value={value}
+                  percentage={15}
                 />
-                {isHovering && (
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <Camera className="w-6 h-6 text-white" />
-                  </div>
-                )}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-              </div>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold">
-                  {activeTab === 'home' ? 'Hello David' : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-                </h1>
-                <p className="text-gray-400">
-                  {activeTab === 'home' ? 'Welcome back!' : `Manage your ${activeTab.toLowerCase()}`}
-                </p>
+              ))}
+            </div>
+            <div className="bg-gray-800 rounded-lg p-4 md:p-6">
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={lineChartData}>
+                    <XAxis dataKey="name" stroke="#666" />
+                    <YAxis stroke="#666" />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
-            <div className="flex items-center space-x-4 w-full md:w-auto">
-              <div className="relative flex-1 md:flex-none">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input 
-                  type="text"
-                  className="w-full md:w-auto pl-10 pr-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Search for users"
-                />
-              </div>
-              <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200">
-                <Bell className="w-5 h-5 text-gray-400" />
+          </div>
+        );
+      case 'billings':
+        return <BillingSettings />;
+      case 'settings':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">Settings</h2>
+
+            {/* Account Deactivation Section */}
+            <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Account Deactivation</h3>
+              <p className="text-gray-400 mb-4">
+                If you're sure you want to deactivate your account, click the button below. This action cannot be undone.
+              </p>
+              <button className="w-full md:w-64 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200">
+                Deactivate Account
               </button>
             </div>
-          </div>
 
-          {/* Dynamic Content */}
-          <div className="space-y-6">
-            {activeTab === 'home' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <StatCard title="Current Jobs" value={statsData.currentJobs} percentage={100} />
-                <StatCard title="Skilled Users" value={statsData.skilledUsers} percentage={100} />
-                <StatCard title="Current Users" value={statsData.currentUsers} percentage={100} />
-                <StatCard 
-                  title="Sales" 
-                  subtitle="Total sales today"
-                  value={`$${statsData.sales}`} 
-                  percentage={100} 
-                />
-                <StatCard 
-                  title="Cancellation"
-                  value={statsData.cancellation} 
-                  percentage={100}
-                  trend="down" 
-                />
-                <StatCard 
-                  title="User Satisfaction"
-                  value={statsData.satisfaction} 
-                  percentage={100} 
-                />
-              </div>
-            )}
-
-            {activeTab === 'stats' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {Object.entries(trafficData).map(([key, value]) => (
-                    <StatCard
-                      key={key}
-                      title={key.replace(/([A-Z])/g, ' $1').trim()}
-                      value={value}
-                      percentage={15}
-                    />
-                  ))}
+            {/* Profile Settings */}
+            <div className="bg-gray-800 rounded-lg p-4 md:p-6">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Profile Settings</h3>
+              <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 mb-4">
+                <div className="flex-1">
+                  <label className="block text-gray-300 mb-2">Full Name</label>
+                  <input
+                    type="text"
+                    className="w-full p-2 bg-gray-700 text-white rounded-md"
+                    placeholder="Enter your full name"
+                  />
                 </div>
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={lineChartData}>
-                        <XAxis dataKey="name" stroke="#666" />
-                        <YAxis stroke="#666" />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
+                <div className="flex-1">
+                  <label className="block text-gray-300 mb-2">Email</label>
+                  <input
+                    type="email"
+                    className="w-full p-2 bg-gray-700 text-white rounded-md"
+                    placeholder="Enter your email"
+                  />
                 </div>
               </div>
-            )}
+              <button className="mt-4 w-full md:w-32 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
+                Save Changes
+              </button>
+            </div>
 
-            {activeTab === 'settings' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-white">Settings</h2>
-
-                {/* Account Deactivation Section */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Account Deactivation</h3>
-                  <p className="text-gray-400 mb-4">
-                    If you're sure you want to deactivate your account, click the button below. This action cannot be undone.
-                  </p>
-                  <button className="w-full md:w-64 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200">
-                    Deactivate Account
-                  </button>
-                </div>
-
-                {/* Profile Settings */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Profile Settings</h3>
-                  <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 mb-4">
-                    <div className="flex-1">
-                      <label className="block text-gray-300 mb-2">Full Name</label>
-                      <input
-                        type="text"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter your full name"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-gray-300 mb-2">Email</label>
-                      <input
-                        type="email"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </div>
-                  <button className="mt-4 w-full md:w-32 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                    Save Changes
-                  </button>
-                </div>
-
-                {/* Account Settings */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Account Settings</h3>
-                  <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-4">
-                    <div className="flex-1">
-                      <label className="block text-gray-300 mb-2">Current Password</label>
-                      <input
-                        type="password"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter current password"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-gray-300 mb-2">New Password</label>
-                      <input
-                        type="password"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter new password"
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-300 mb-2">Confirm Password</label>
-                    <input
-                      type="password"
-                      className="w-full p-2 bg-gray-700 text-white rounded-md"
-                      placeholder="Confirm new password"
-                    />
-                  </div>
-                  <button className="w-full md:w-64 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                    Change Password
-                  </button>
-                </div>
-
-                {/* Security Settings */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
+              {/* Security Settings */}
+              <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
                   <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Security Settings</h3>
                   <div className="space-y-4">
                     <div>
@@ -414,8 +304,110 @@ const AdminDashboard = () => {
                     Save Privacy
                   </button>
                 </div>
+
+          </div>
+        );
+      case 'projects':
+      case 'chat':
+      default:
+        return (
+          <div className="bg-gray-800 rounded-lg p-6 text-center">
+            <h2 className="text-xl font-semibold mb-2">
+              {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Tab
+            </h2>
+            <p className="text-gray-400">
+              This section is currently under development.
+            </p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Mobile Menu Button */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <button 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 bg-gray-800 rounded-lg"
+        >
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      <div className="flex flex-col md:flex-row">
+        {/* Sidebar - Mobile Drawer */}
+        <div className={`
+          fixed md:relative w-64 h-screen bg-gray-800 p-4 z-40
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}>
+          <div className="space-y-2 mt-12 md:mt-0">
+            <SidebarLink icon={Home} label="Home" active={activeTab === 'home'} />
+            <SidebarLink icon={FileText} label="Projects" active={activeTab === 'projects'} />
+            <SidebarLink icon={CreditCard} label="Billings" active={activeTab === 'billings'} />
+            <SidebarLink icon={BarChart2} label="Stats" active={activeTab === 'stats'} />
+            <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} />
+            <SidebarLink icon={Send} label="Chat" active={activeTab === 'chat'} />
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 md:ml-64 p-4 md:p-8 mt-12 md:mt-0">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-4">
+              <div 
+                className="relative w-12 h-12 rounded-full overflow-hidden cursor-pointer group"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <img
+                  src={profileImage || "/api/placeholder/48/48"}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+                {isHovering && (
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <Camera className="w-6 h-6 text-white" />
+                  </div>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
               </div>
-            )}
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold">
+                  {activeTab === 'home' ? 'Hello David' : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                </h1>
+                <p className="text-gray-400">
+                  {activeTab === 'home' ? 'Welcome back!' : `Manage your ${activeTab.toLowerCase()}`}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4 w-full md:w-auto">
+              <div className="relative flex-1 md:flex-none">
+                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input 
+                  type="text"
+                  className="w-full md:w-auto pl-10 pr-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="Search for users"
+                />
+              </div>
+              <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200">
+                <Bell className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+          </div>
+
+          {/* Dynamic Content */}
+          <div className="space-y-6">
+            {renderTabContent()}
           </div>
         </div>
       </div>
