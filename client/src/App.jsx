@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import LoginPage from './pages/login';
 import Freelancer from './pages/Freelancer';
+
 // import AdminDashboard from './AdminDashboard';
 
 function App() {

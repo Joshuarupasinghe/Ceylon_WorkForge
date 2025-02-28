@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { Home, FileText, CreditCard, BarChart2, Settings, Bell, Search, Camera, Send, Menu, X } from 'lucide-react';
 import BillingSettings from '../components/BillingSettings';
+import FreelanceChatRoom from '../components/FreelanceChatRoom';
+import FreelanceProjects from '../components/projects';
 
 
 const AdminDashboard = () => {
@@ -40,6 +42,8 @@ const AdminDashboard = () => {
       usersWithProjects: 3454,
     }
   };
+
+  
 
   const trafficData = {
     views: 7265,
@@ -116,6 +120,43 @@ const AdminDashboard = () => {
             />
           </div>
         );
+
+        case 'projects':
+        return <FreelanceProjects />;
+      case '': 
+            return (  
+                <div className="p-6 bg-gray-900 min-h-screen text-gray-300">
+      <h2 className="text-2xl font-semibold mb-4">Freelance Projects</h2>
+      <div className="space-y-4">
+        {projects.map(project => (
+          <div key={project.id} className="bg-gray-800 p-4 rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold">{project.title}</h3>
+            <p className="text-gray-400">Client: {project.client}</p>
+            <p className="text-gray-300">Status: <span className={getStatusClass(project.status)}>{project.status}</span></p>
+            
+            {project.status === 'In Progress' && (
+              <div className="mt-4">
+                <label className="block text-sm mb-2">Submit Work:</label>
+                <input type="file" onChange={(e) => handleFileUpload(project.id, e)} className="border p-2 rounded bg-gray-700" />
+              </div>
+            )}
+
+            {project.submissions.length > 0 && (
+              <div className="mt-4">
+                <h4 className="text-lg font-semibold">Submitted Files:</h4>
+                <ul className="list-disc pl-5 text-gray-400">
+                  {project.submissions.map((file, index) => (
+                    <li key={index}>{file}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+            );
+
       case 'stats':
         return (
           <div className="space-y-6">
@@ -141,6 +182,7 @@ const AdminDashboard = () => {
                 </ResponsiveContainer>
               </div>
             </div>
+           
           </div>
         );
       case 'billings':
@@ -307,17 +349,87 @@ const AdminDashboard = () => {
 
           </div>
         );
-      case 'projects':
       case 'chat':
-      default:
+        return <FreelanceChatRoom />;
+      case '': 
         return (
-          <div className="bg-gray-800 rounded-lg p-6 text-center">
-            <h2 className="text-xl font-semibold mb-2">
-              {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Tab
-            </h2>
-            <p className="text-gray-400">
-              This section is currently under development.
-            </p>
+            
+            <div className="flex flex-col h-screen max-h-96 bg-teal-900 rounded-lg shadow-lg">
+                {/* Chatroom */}
+            {/* Header */}
+            <div className="bg-teal-700 text-white p-4 rounded-t-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center">
+                    <span className="text-teal-900 font-bold">C</span>
+                  </div>
+                  <div className="ml-3">
+                    <h2 className="font-bold">josuwa perera</h2>
+                    <p className="text-xs text-teal-200">Photography Project</p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center cursor-pointer">
+                    <span className="text-white">📞</span>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center cursor-pointer">
+                    <span className="text-white">⚙️</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Messages */}
+            <div className="flex-1 p-4 overflow-y-auto">
+              {messages.map((message) => (
+                <div 
+                  key={message.id} 
+                  className={`mb-4 flex ${message.sender === 'You' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div 
+                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      message.sender === 'You' 
+                        ? 'bg-blue-700 text-white rounded-tr-none' 
+                        : 'bg-teal-300 text-gray-800 rounded-tl-none'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-bold text-xs">{message.sender}</span>
+                      <span className="text-xs opacity-75">{message.time}</span>
+                    </div>
+                    <p>{message.text}</p>
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+            
+            {/* Input */}
+            <div className="p-4 border-t border-gray-200 bg-teal-800 rounded-b-lg">
+              <div className="flex items-center">
+                <button className="p-2 text-gray-400 hover:text-teal-300">
+                  <span>📎</span>
+                </button>
+                <textarea
+                  className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300 resize-none"
+                  placeholder="Type your message..."
+                  rows="1"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+                <button 
+                  className="ml-2 p-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 focus:outline-none"
+                  onClick={handleSendMessage}
+                >
+                  <span>➤</span>
+                </button>
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-gray-300">
+                <span>Project: Photography Portfolio</span>
+                <span>Rate: $45/hr</span>
+              </div>
+            </div>
           </div>
         );
     }
@@ -338,7 +450,7 @@ const AdminDashboard = () => {
       <div className="flex flex-col md:flex-row">
         {/* Sidebar - Mobile Drawer */}
         <div className={`
-          fixed md:relative w-64 h-screen bg-gray-800 p-4 z-40
+          fixed md:relative w-64 max-h-full bg-gray-800 p-4 z-40
           transform transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}>
