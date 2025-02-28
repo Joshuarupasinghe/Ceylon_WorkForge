@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User, Lock } from "lucide-react";
 import { authService } from "../services/api";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -43,8 +44,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="flex w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="flex w-full max-w-5xl bg-white rounded-2xl overflow-hidden shadow-2xl">
         {/* Left Section */}
         <div
           className="hidden lg:flex w-1/2 bg-cover p-16 text-white"
@@ -114,6 +115,14 @@ export default function LoginPage() {
               >
                 {loading ? "Signing in..." : "Log In"}
               </button>
+
+              <div className="flex items-center justify-center">
+                <hr className="w-full border-gray-300" />
+                <span className="px-6 text-gray-500 text-xl">OR</span>
+                <hr className="w-full border-gray-300" />
+              </div>
+              {/* Google Auth Button */}
+              <GoogleAuthButton />
 
               {/* Sign-up Link */}
               <p className="text-md text-center mt-4 text-gray-600">
