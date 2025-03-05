@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import LoginPage from './pages/login';
 import Freelancer from './pages/Freelancer';
+import SuperAdminDashboard from './pages/SuperAdmin';
 
 // import AdminDashboard from './AdminDashboard';
 
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/free" element={<Freelancer />} />
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
         {/* <Route path="/admin" element={<AdminDashboard />} /> */}
       </Routes>
     </div>
