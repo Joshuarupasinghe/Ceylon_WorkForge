@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import LoginPage from './pages/login';  
+import LoginPage from './pages/Login';  
 import OauthSignUp from './pages/OauthSignUp';  
 import SignUp from './pages/SignUp'; 
 import ProfileForm from './pages/ProfileForm';
