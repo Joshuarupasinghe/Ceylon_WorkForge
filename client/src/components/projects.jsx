@@ -6,7 +6,9 @@ const FreelanceProjects = () => {
     { id: 2, title: 'Website Development', client: 'Sara B', status: 'In Progress', submissions: [] },
     { id: 3, title: 'Social Media Marketing Campaign', client: 'Alex P', status: 'Finished', submissions: ['Campaign Report.pdf'] },
     { id: 4, title: 'SEO Optimization', client: 'Mike J', status: 'Pending', submissions: [] },
-    { id: 5, title: 'Mobile App Design', client: 'Laura T', status: 'Delayed', submissions: [] }
+    { id: 5, title: 'Mobile App Design', client: 'Laura T', status: 'Delayed', submissions: [] },
+    { id: 6, title: 'E-commerce Setup', client: 'David K', status: 'In Progress', submissions: [] },
+    { id: 7, title: 'Blog Content Strategy', client: 'Emma W', status: 'Pending', submissions: [] }
   ]);
 
   const handleFileUpload = (projectId, event) => {
@@ -21,35 +23,40 @@ const FreelanceProjects = () => {
   };
 
   return (
-    
-    <div className="p-6 bg-gray-900 min-h-screen text-gray-300">
-      <h2 className="text-2xl font-semibold mb-4">Freelance Projects</h2>
-      <div className="space-y-4">
-        {projects.map(project => (
-          <div key={project.id} className="bg-gray-800 p-4 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold">{project.title}</h3>
-            <p className="text-gray-400">Client: {project.client}</p>
-            <p className="text-gray-300">Status: <span className={getStatusClass(project.status)}>{project.status}</span></p>
-            
-            {project.status === 'In Progress' && (
-              <div className="mt-4">
-                <label className="block text-sm mb-2">Submit Work:</label>
-                <input type="file" onChange={(e) => handleFileUpload(project.id, e)} className="border p-2 rounded bg-gray-700" />
-              </div>
-            )}
+    <div className="flex h-fit justify-center items-center bg-gray-900 text-gray-300 p-6">
+      <div className="w-full bg-gray-800 rounded-xl shadow-md p-6 h-[80vh] flex flex-col">
+        {/* <h2 className="text-2xl font-semibold mb-4 text-center">Freelance Projects</h2> */}
+        
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto flex-1 space-y-4 pr-2">
+          {projects.map(project => (
+            <div key={project.id} className="bg-gray-700 p-4 rounded-xl shadow-md">
+              <h3 className="text-xl font-semibold">{project.title}</h3>
+              <p className="text-gray-400">Client: {project.client}</p>
+              <p className="text-gray-300">
+                Status: <span className={getStatusClass(project.status)}>{project.status}</span>
+              </p>
 
-            {project.submissions.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-lg font-semibold">Submitted Files:</h4>
-                <ul className="list-disc pl-5 text-gray-400">
-                  {project.submissions.map((file, index) => (
-                    <li key={index}>{file}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        ))}
+              {project.status === 'In Progress' && (
+                <div className="mt-4">
+                  <label className="block text-sm mb-2">Submit Work:</label>
+                  <input type="file" onChange={(e) => handleFileUpload(project.id, e)} className="border p-2 rounded bg-gray-600 w-full" />
+                </div>
+              )}
+
+              {project.submissions.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-lg font-semibold">Submitted Files:</h4>
+                  <ul className="list-disc pl-5 text-gray-400">
+                    {project.submissions.map((file, index) => (
+                      <li key={index}>{file}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

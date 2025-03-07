@@ -1,9 +1,12 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { Home, FileText, CreditCard, BarChart2, Settings, Bell, Search, Camera, Send, Menu, X } from 'lucide-react';
 import BillingSettings from '../components/BillingSettings';
 import FreelanceChatRoom from '../components/FreelanceChatRoom';
 import FreelanceProjects from '../components/projects';
+import SettingsComponent from '../components/Settings Component';
+
 
 
 const AdminDashboard = () => {
@@ -42,8 +45,6 @@ const AdminDashboard = () => {
       usersWithProjects: 3454,
     }
   };
-
-  
 
   const trafficData = {
     views: 7265,
@@ -121,7 +122,7 @@ const AdminDashboard = () => {
           </div>
         );
 
-        case 'projects':
+      case 'projects':
         return <FreelanceProjects />;
       case '': 
             return (  
@@ -185,258 +186,29 @@ const AdminDashboard = () => {
            
           </div>
         );
+
+    
+      
       case 'billings':
         return <BillingSettings />;
+      
+
       case 'settings':
-        return (
-          <div className="space-y-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-white">Settings</h2>
+        return <SettingsComponent />;
 
-            {/* Account Deactivation Section */}
-            <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Account Deactivation</h3>
-              <p className="text-gray-400 mb-4">
-                If you're sure you want to deactivate your account, click the button below. This action cannot be undone.
-              </p>
-              <button className="w-full md:w-64 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200">
-                Deactivate Account
-              </button>
-            </div>
 
-            {/* Profile Settings */}
-            <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Profile Settings</h3>
-              <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4 mb-4">
-                <div className="flex-1">
-                  <label className="block text-gray-300 mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    className="w-full p-2 bg-gray-700 text-white rounded-md"
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-gray-300 mb-2">Email</label>
-                  <input
-                    type="email"
-                    className="w-full p-2 bg-gray-700 text-white rounded-md"
-                    placeholder="Enter your email"
-                  />
-                </div>
-              </div>
-              <button className="mt-4 w-full md:w-32 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                Save Changes
-              </button>
-            </div>
-
-              {/* Security Settings */}
-              <div className="bg-gray-800 rounded-lg p-4 md:p-6 mb-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Security Settings</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-gray-300 mb-2">Security Question</label>
-                      <input
-                        type="text"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter your security question"
-                        value={securityQuestion}
-                        onChange={(e) => setSecurityQuestion(e.target.value)}
-                      />
-                      </div>
-                    <div>
-                      <label className="block text-gray-300 mb-2">Answer</label>
-                      <input
-                        type="text"
-                        className="w-full p-2 bg-gray-700 text-white rounded-md"
-                        placeholder="Enter your answer"
-                        value={securityAnswer}
-                        onChange={(e) => setSecurityAnswer(e.target.value)}
-                      />
-                    </div>
-
-                    {/* Two Factor Authentication */}
-                    <div className="flex items-center space-x-4">
-                      <input
-                        type="checkbox"
-                        checked={twoFactorEnabled}
-                        onChange={() => setTwoFactorEnabled(!twoFactorEnabled)}
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="text-gray-300">Enable Two-Factor Authentication</span>
-                    </div>
-
-                    <button className="w-full md:w-64 mt-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                      Save Security Settings
-                    </button>
-                  </div>
-                </div>
-
-                {/* Notification Settings */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Notification Settings</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Receive email notifications</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Receive push notifications</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Receive SMS notifications</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Receive weekly digest</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Receive important updates</span>
-                    </div>
-                  </div>
-                  <button className="mt-6 w-full md:w-32 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                    Save Settings
-                  </button>
-                </div>
-
-                {/* Privacy Settings */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4">Privacy Settings</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Make profile public</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Show online status</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="h-4 w-4 bg-gray-600 rounded"
-                      />
-                      <span className="ml-4 text-gray-300">Allow others to message me</span>
-                    </div>
-                  </div>
-                  <button className="mt-6 w-full md:w-32 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-200">
-                    Save Privacy
-                  </button>
-                </div>
-
-          </div>
-        );
       case 'chat':
         return <FreelanceChatRoom />;
-      case '': 
-        return (
-            
-            <div className="flex flex-col h-screen max-h-96 bg-teal-900 rounded-lg shadow-lg">
-                {/* Chatroom */}
-            {/* Header */}
-            <div className="bg-teal-700 text-white p-4 rounded-t-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center">
-                    <span className="text-teal-900 font-bold">C</span>
-                  </div>
-                  <div className="ml-3">
-                    <h2 className="font-bold">josuwa perera</h2>
-                    <p className="text-xs text-teal-200">Photography Project</p>
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center cursor-pointer">
-                    <span className="text-white">📞</span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center cursor-pointer">
-                    <span className="text-white">⚙️</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto">
-              {messages.map((message) => (
-                <div 
-                  key={message.id} 
-                  className={`mb-4 flex ${message.sender === 'You' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div 
-                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                      message.sender === 'You' 
-                        ? 'bg-blue-700 text-white rounded-tr-none' 
-                        : 'bg-teal-300 text-gray-800 rounded-tl-none'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-bold text-xs">{message.sender}</span>
-                      <span className="text-xs opacity-75">{message.time}</span>
-                    </div>
-                    <p>{message.text}</p>
-                  </div>
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-            
-            {/* Input */}
-            <div className="p-4 border-t border-gray-200 bg-teal-800 rounded-b-lg">
-              <div className="flex items-center">
-                <button className="p-2 text-gray-400 hover:text-teal-300">
-                  <span>📎</span>
-                </button>
-                <textarea
-                  className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300 resize-none"
-                  placeholder="Type your message..."
-                  rows="1"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                />
-                <button 
-                  className="ml-2 p-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 focus:outline-none"
-                  onClick={handleSendMessage}
-                >
-                  <span>➤</span>
-                </button>
-              </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-300">
-                <span>Project: Photography Portfolio</span>
-                <span>Rate: $45/hr</span>
-              </div>
-            </div>
-          </div>
-        );
+        
+        
+       
     }
   };
 
+
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen w-full-auto bg-gray-900 text-white flex flex-col">
       {/* Mobile Menu Button */}
       <div className="md:hidden fixed top-4 left-4 z-50">
         <button 
@@ -447,81 +219,88 @@ const AdminDashboard = () => {
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row">
-        {/* Sidebar - Mobile Drawer */}
-        <div className={`
-          fixed md:relative w-64 max-h-full bg-gray-800 p-4 z-40
-          transform transition-transform duration-300 ease-in-out
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}>
-          <div className="space-y-2 mt-12 md:mt-0">
-            <SidebarLink icon={Home} label="Home" active={activeTab === 'home'} />
-            <SidebarLink icon={FileText} label="Projects" active={activeTab === 'projects'} />
-            <SidebarLink icon={CreditCard} label="Billings" active={activeTab === 'billings'} />
-            <SidebarLink icon={BarChart2} label="Stats" active={activeTab === 'stats'} />
-            <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} />
-            <SidebarLink icon={Send} label="Chat" active={activeTab === 'chat'} />
-          </div>
-        </div>
+      <div className="flex flex-1 h-screen overflow-hidden">
 
-        {/* Main Content */}
-        <div className="flex-1 md:ml-64 p-4 md:p-8 mt-12 md:mt-0">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-4">
-              <div 
-                className="relative w-12 h-12 rounded-full overflow-hidden cursor-pointer group"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <img
-                  src={profileImage || "/api/placeholder/48/48"}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-                {isHovering && (
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <Camera className="w-6 h-6 text-white" />
-                  </div>
-                )}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-              </div>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold">
-                  {activeTab === 'home' ? 'Hello David' : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-                </h1>
-                <p className="text-gray-400">
-                  {activeTab === 'home' ? 'Welcome back!' : `Manage your ${activeTab.toLowerCase()}`}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4 w-full md:w-auto">
-              <div className="relative flex-1 md:flex-none">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input 
-                  type="text"
-                  className="w-full md:w-auto pl-10 pr-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Search for users"
-                />
-              </div>
-              <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200">
-                <Bell className="w-5 h-5 text-gray-400" />
-              </button>
+        {/* Sidebar - Fixed on desktop, Drawer on mobile */}
+<aside className={`
+  fixed md:sticky top-0 max-h-screen md:h-screen overflow-y-auto
+  w-64 bg-gray-800 p-4 z-40
+  transition-transform duration-300 ease-in-out
+  ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+`}>
+
+          <div className="flex flex-col h-full">
+            <div className="space-y-2 mt-12 md:mt-0">
+              <SidebarLink icon={Home} label="Home" active={activeTab === 'home'} />
+              <SidebarLink icon={FileText} label="Projects" active={activeTab === 'projects'} />
+              <SidebarLink icon={CreditCard} label="Billings" active={activeTab === 'billings'} />
+              <SidebarLink icon={BarChart2} label="Stats" active={activeTab === 'stats'} />
+              <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} />
+              <SidebarLink icon={Send} label="Chat" active={activeTab === 'chat'} />
             </div>
           </div>
+        </aside>
 
-          {/* Dynamic Content */}
-          <div className="space-y-6">
-            {renderTabContent()}
+        {/* Main Content - Scrollable */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 md:p-8 mt-12 md:mt-0 w-full">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+              <div className="flex items-center space-x-4">
+                <div 
+                  className="relative w-12 h-12 rounded-full overflow-hidden cursor-pointer group"
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <img
+                    src={profileImage || "/api/placeholder/48/48"}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                  {isHovering && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                      <Camera className="w-6 h-6 text-white" />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
+                </div>
+                <div>
+                  <h1 className="text-xl md:text-2xl font-bold">
+                    {activeTab === 'home' ? 'Hello David' : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                  </h1>
+                  <p className="text-gray-400">
+                    {activeTab === 'home' ? 'Welcome back!' : `Manage your ${activeTab.toLowerCase()}`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 w-full md:w-auto">
+                <div className="relative flex-1 md:flex-none">
+                  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input 
+                    type="text"
+                    className="w-full md:w-auto pl-10 pr-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    placeholder="Search for users"
+                  />
+                </div>
+                <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200">
+                  <Bell className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+            </div>
+
+            {/* Dynamic Content */}
+            <div className="space-y-6">
+              {renderTabContent()}
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

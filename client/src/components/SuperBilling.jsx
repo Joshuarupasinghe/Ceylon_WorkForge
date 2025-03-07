@@ -9,40 +9,37 @@ const SuperAdminBilling = () => {
     { id: 3, user: 'Mike Johnson', date: '27 Dec 2024', amount: '$49.99', status: 'Failed', invoice: 'INV-003' },
     { id: 4, user: 'Sarah Lee', date: '15 Mar 2025', amount: '$59.99', status: 'Paid', invoice: 'INV-004' },
     { id: 5, user: 'Robert Brown', date: '10 Feb 2025', amount: '$89.99', status: 'Pending', invoice: 'INV-005' },
-    { id: 6, user: 'Emily White', date: '20 Jan 2025', amount: '$109.99', status: 'Failed', invoice: 'INV-006' },
-    { id: 7, user: 'David Green', date: '5 Feb 2025', amount: '$39.99', status: 'Paid', invoice: 'INV-007' },
-    { id: 8, user: 'Lucy Gray', date: '28 Jan 2025', amount: '$79.99', status: 'Pending', invoice: 'INV-008' },
-    { id: 9, user: 'James Clark', date: '22 Dec 2024', amount: '$99.99', status: 'Failed', invoice: 'INV-009' },
-    { id: 10, user: 'Sophia Turner', date: '14 Mar 2025', amount: '$69.99', status: 'Paid', invoice: 'INV-010' },
   ];
 
   const userActions = [
     { id: 1, user: 'Jack Hard', rating: 4.6 },
-    { id: 2, user: 'Jack Hard', rating: 4.6 },
-    { id: 3, user: 'Jack Hard', rating: 4.6 },
-    { id: 4, user: 'Jack Hard', rating: 4.6 },
-    { id: 5, user: 'Jack Hard', rating: 4.6 },
+    { id: 2, user: 'Alice Smith', rating: 4.9 },
+    { id: 3, user: 'Robert King', rating: 4.2 },
+    { id: 4, user: 'Emma Johnson', rating: 4.7 },
   ];
 
   // Function to simulate invoice download
   const downloadInvoice = (invoiceId) => {
-    const invoiceUrl = `/invoices/${invoiceId}.pdf`; // You can replace this with the actual path or URL
+    const invoiceUrl = `/invoices/${invoiceId}.pdf`;
     const link = document.createElement('a');
     link.href = invoiceUrl;
-    link.download = `${invoiceId}.pdf`; // Sets the filename to be downloaded
+    link.download = `${invoiceId}.pdf`;
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link); // Clean up after download
+    document.body.removeChild(link);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="max-w-6xl mx-auto p-4 md:p-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">Super Admin Billing</h1>
+    <div className="flex min-h-screen bg-gray-900 text-white">
+     
+      {/* Main Content */}
+      <main className="ml-64 w-full p-6">
+        <h1 className="text-2xl font-bold mb-4">Super Admin Billing</h1>
 
-        <div className="space-y-6">
+        {/* Billing Section (Scrollable) */}
+        <div className="bg-gray-800 rounded-lg p-6 shadow-lg h-[700px] overflow-y-auto">
           {/* Auto-Renewal Settings */}
-          <div className="bg-gray-800 rounded-lg p-4 md:p-6 shadow-lg">
+          <div className="bg-gray-700 rounded-lg p-4 mb-4">
             <h2 className="text-xl font-semibold text-gray-300 mb-4">Billing Settings</h2>
             <div className="flex items-center">
               <input
@@ -55,13 +52,13 @@ const SuperAdminBilling = () => {
             </div>
           </div>
 
-          {/* Billing History */}
-          <div className="bg-gray-800 rounded-lg p-4 md:p-6 shadow-lg">
+          {/* Billing Transactions */}
+          <div className="bg-gray-700 rounded-lg p-4 mb-4">
             <h2 className="text-xl font-semibold text-gray-300 mb-4">Billing Transactions</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b border-gray-700">
+                  <tr className="border-b border-gray-600">
                     <th className="p-2 text-left text-gray-400">User</th>
                     <th className="p-2 text-left text-gray-400">Date</th>
                     <th className="p-2 text-left text-gray-400">Amount</th>
@@ -72,7 +69,7 @@ const SuperAdminBilling = () => {
                 </thead>
                 <tbody>
                   {billingHistory.map((item) => (
-                    <tr key={item.id} className="border-b border-gray-700">
+                    <tr key={item.id} className="border-b border-gray-600">
                       <td className="p-2">{item.user}</td>
                       <td className="p-2">{item.date}</td>
                       <td className="p-2">{item.amount}</td>
@@ -87,7 +84,7 @@ const SuperAdminBilling = () => {
                           onClick={() => downloadInvoice(item.invoice)}
                           className="text-teal-500 hover:text-teal-400 transition-colors"
                         >
-                          Download Invoice
+                          Download
                         </button>
                       </td>
                     </tr>
@@ -98,12 +95,12 @@ const SuperAdminBilling = () => {
           </div>
 
           {/* User Actions */}
-          <div className="bg-gray-800 rounded-lg p-4 md:p-6 shadow-lg">
+          <div className="bg-gray-700 rounded-lg p-4">
             <h2 className="text-xl font-semibold text-gray-300 mb-4">User Actions</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b border-gray-700">
+                  <tr className="border-b border-gray-600">
                     <th className="p-2 text-left text-gray-400">User</th>
                     <th className="p-2 text-left text-gray-400">Rating</th>
                     <th className="p-2 text-left text-gray-400">Actions</th>
@@ -111,15 +108,15 @@ const SuperAdminBilling = () => {
                 </thead>
                 <tbody>
                   {userActions.map((action) => (
-                    <tr key={action.id} className="border-b border-gray-700">
+                    <tr key={action.id} className="border-b border-gray-600">
                       <td className="p-2">{action.user}</td>
                       <td className="p-2">{action.rating}</td>
                       <td className="p-2">
                         <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-400 transition-colors">
-                          Promote User
+                          Promote
                         </button>
                         <button className="ml-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition-colors">
-                          Demote User
+                          Demote
                         </button>
                       </td>
                     </tr>
@@ -130,7 +127,7 @@ const SuperAdminBilling = () => {
           </div>
 
         </div>
-      </div>
+      </main>
     </div>
   );
 };
