@@ -7,6 +7,7 @@ import ProfileForm from './pages/ProfileForm';
 import HomePage from './pages/HomePage'; 
 import CategorySection from './pages/CategorySection';
 import NavListMenu from './pages/NavListMenu';
+import PostProjectForm from './pages/PostProject';  
 
 
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/Category" element={<CategorySection />} />
         <Route path="/Nav" element={<NavListMenu />} />
+        <Route path="/PostProject" element={<PostProjectForm />} />
       
       </Routes>
     </div>
