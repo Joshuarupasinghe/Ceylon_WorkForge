@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import CategorySection from './pages/CategorySection';
 import NavListMenu from './pages/NavListMenu';
 import PostProjectForm from './pages/PostProject';  
+import LoadingScreen from './pages/Loading';
 
 
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/Category" element={<CategorySection />} />
         <Route path="/Nav" element={<NavListMenu />} />
         <Route path="/PostProject" element={<PostProjectForm />} />
+        <Route path="/loading" element={<LoadingScreen />} />
       
       </Routes>
     </div>
