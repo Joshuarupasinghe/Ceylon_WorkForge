@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import LoginPage from './pages/login';
 import Freelancer from './pages/Freelancer';
 import SuperAdminDashboard from './pages/SuperAdmin';
+import ClientDashboard from './pages/ClientDashboard';
 
 // import AdminDashboard from './AdminDashboard';
 
@@ -14,6 +15,8 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/free" element={<Freelancer />} />
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/client" element={<ClientDashboard />} />
+
         {/* <Route path="/admin" element={<AdminDashboard />} /> */}
       </Routes>
     </div>
