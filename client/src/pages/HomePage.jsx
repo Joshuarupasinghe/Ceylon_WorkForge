@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-
 const ServiceCard = ({ title, imageUrl, color }) => (
   <div className={`${color} rounded-lg overflow-hidden h-64 transition-transform hover:scale-105 cursor-pointer`}>
     <div className="relative h-full">
@@ -10,7 +9,7 @@ const ServiceCard = ({ title, imageUrl, color }) => (
         alt={title}
         className="w-full h-full object-cover"
       />
-      <div className="absolute inset-0 bg- bg-opacity-40 flex items-end">
+      <div className="absolute inset-0 bg-tranparent bg-opacity-40 flex items-end">
         <h3 className="text-xl font-bold text-white p-6 w-full text-center">
           {title}
         </h3>
@@ -20,9 +19,14 @@ const ServiceCard = ({ title, imageUrl, color }) => (
 );
 
 const HomePage = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // Search-related states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
+
+  // Carousel state
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Data arrays
   const services = [
     { id: 1, title: "WEB DEVELOPMENT", imageUrl: "/imges/WEB develeper.png", color: "bg-purple-600" },
     { id: 2, title: "LOGO DESIGN", imageUrl: "/imges/logo desing.png", color: "bg-blue-500" },
@@ -33,8 +37,6 @@ const HomePage = () => {
     { id: 7, title: "CONTENT WRITING", imageUrl: "/imges/content writing.png", color: "bg-teal-500" },
     { id: 8, title: "DIGITAL MARKETING", imageUrl: "/imges/Digital marketing.png", color: "bg-orange-500" }
   ];
-  
-  
 
   const features = [
     { id: 1, title: 'Feature 1', description: 'Find the perfect match for your project needs. Connect with skilled professionals.' },
@@ -43,74 +45,126 @@ const HomePage = () => {
   ];
 
   const sellers = [
-    { id: 1, name: 'John Smith', rating: 4.9, image: 'imges/john smith.webp' },
-    { id: 2, name: 'Emma Wilson', rating: 4.8, image: 'imges/emma wilson.jpeg' },
-    { id: 3, name: 'Michael Brown', rating: 4.9, image: 'imges/michael brown .webp' }
+    { id: 1, name: 'John Smith', rating: 4.9, image: '/imges/john smith.webp' },
+    { id: 2, name: 'Emma Wilson', rating: 4.8, image: '/imges/emma wilson.jpeg' },
+    { id: 3, name: 'Michael Brown', rating: 4.9, image: '/imges/michael brown.webp' }
   ];
 
   const resources = [
-    { id: 1, title: 'Perfect Project Pitch', image: 'public/imges/perfect project .png', description: 'Learn how to create compelling project proposals' },
-    { id: 2, title: 'Freelance Success Guide', image: 'imges/freelance succes.png', description: 'Essential tips for freelancing success' },
-    { id: 3, title: 'Business Growth Tips', image: 'imges/tips.png', description: 'Strategies to scale your freelance business' }
+    { id: 1, title: 'Perfect Project Pitch', image: "/imges/perfect project .png", description: 'Learn how to create compelling project proposals' },
+    { id: 2, title: 'Freelance Success Guide', image: "/imges/freelance succes.png", description: 'Essential tips for freelancing success' },
+    { id: 3, title: 'Business Growth Tips', image: "/imges/tips.png", description: 'Strategies to scale your freelance business' }
   ];
 
   const categoriesData = [
-    { name: 'IT Services', image: 'imges/IT services.png', link: '/it-services'},
-    { name: 'Transportation', image: 'imges/Transportation.png', link: '/transportation' },
-    { name: 'Communication', image: 'imges/Communication.png', link: '/communication' },
-    { name: 'Audio & Music', image: 'imges/Audio&music.png', link: '/audio-music' },
-    { name: 'Construction', image: 'imges/Construction.png', link: '/construction' },
-    { name: 'Consulting', image: 'imges/Consulting.png', link: '/consulting' },
-    { name: 'Article writing', image: 'imges/Article writing.png', link: '/article-writing' },
-    { name: 'Teaching', image: 'public/imges/teaching.png', link: '/teaching' }
+    { name: 'IT Services', image: '/imges/IT services.png', link: '/it-services'},
+    { name: 'Transportation', image: '/imges/Transportation.png', link: '/transportation' },
+    { name: 'Communication', image: '/imges/Communication.png', link: '/communication' },
+    { name: 'Audio & Music', image: '/imges/Audio&music.png', link: '/audio-music' },
+    { name: 'Construction', image: '/imges/Construction.png', link: '/construction' },
+    { name: 'Consulting', image: '/imges/Consulting.png', link: '/consulting' },
+    { name: 'Article writing', image: '/imges/Article writing.png', link: '/article-writing' },
+    { name: 'Teaching', image: '/imges/teaching.png', link: '/teaching' }
   ];
 
+  // For carousel calculations
   const visibleServices = 4;
   const maxIndex = services.length - visibleServices;
 
+  // Search handler
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+
+    if (!query.trim()) {
+      setFilteredResults([]);
+      return;
+    }
+
+    const allItems = [
+      ...services.map((s) => ({ ...s, section: "Services" })),
+      ...features.map((f) => ({ ...f, section: "Features" })),
+      ...sellers.map((s) => ({ name: s.name, section: "Sellers" })),
+      ...resources.map((r) => ({ ...r, section: "Resources" })),
+      ...categoriesData.map((c) => ({ ...c, section: "Categories" })),
+    ];
+
+    const filtered = allItems.filter((item) =>
+      (item.title || item.name).toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFilteredResults(filtered);
+  };
+
+  // Carousel navigation
   const nextSlide = () => {
-    setCurrentIndex(prev => Math.min(prev + 1, maxIndex));
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
   };
 
   const prevSlide = () => {
-    setCurrentIndex(prev => Math.max(prev - 1, 0));
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <header className="bg-gray-900 text-white py-16">
+      <header className="bg-gray-900 text-white py-16 relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-8 md:mb-0">
+            <div className="md:w-1/2 mb-8 md:mb-0 relative">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 Ceylon WorkForce
               </h1>
               <p className="text-xl mb-6">FREELANCING MADE EASY!</p>
+              {/* Search Input with functionality */}
               <div className="relative">
                 <input
                   type="text"
                   placeholder="What skill are you looking for?"
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
                   className="w-full px-6 py-3 rounded-full text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-600 bg-gray-500"
                 />
-                <button className="absolute right-2 top-2 bg-teal-500 text-white px-6 py-1 rounded-full hover:bg-teal-600 transition">
+                <button 
+                  onClick={() => handleSearch(searchQuery)}
+                  className="absolute right-2 top-2 bg-teal-500 text-white px-6 py-1 rounded-full hover:bg-teal-600 transition"
+                >
                   Search
                 </button>
+                {/* Search Results Dropdown */}
+                {filteredResults.length > 0 && (
+                  <div className="absolute top-14 left-0 w-full bg-white shadow-lg rounded-lg overflow-hidden z-10">
+                    {filteredResults.map((result, index) => (
+                      <div 
+                        key={index} 
+                        className="p-3 border-b last:border-none cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          // Scroll to the section with matching id
+                          document.getElementById(result.section)?.scrollIntoView({ behavior: "smooth" });
+                          setSearchQuery("");
+                          setFilteredResults([]);
+                        }}
+                      >
+                        <span className="font-semibold">{result.title || result.name}</span> 
+                        <span className="text-gray-500 text-sm"> ({result.section})</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div> 
-            {/* hero section imges */}
+            </div>
+            {/* Hero Section Images */}
             <div className="grid grid-cols-2 gap-8 p-4 bg-gray-900">
               <div className="rounded-2xl overflow-hidden w-64 h-64">
-                <img src="public/imges/hero 1.png" alt="Worker 1" className="w-full h-full object-cover" />
+                <img src="/imges/hero 1.png" alt="Worker 1" className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden w-64 h-64">
-                <img src="public/imges/hero2.png" alt="Worker 2" className="w-full h-full object-cover" />
+                <img src="/imges/hero2.png" alt="Worker 2" className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden w-full h-full relative">
                 <img 
-                  src="public/imges/hero3.png" 
+                  src="/imges/hero3.png" 
                   alt="3D Artist" 
-                  className="w-px-10 h-16 md:h-px10 lg:h-96 object-cover" 
+                  className="w-full h-full object-cover" 
                 />
               </div>
             </div>
@@ -118,9 +172,8 @@ const HomePage = () => {
         </div>
       </header>
 
-
       {/* Popular Services Carousel */}
-      <section className="py-16">
+      <section id="Services" className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-bold">Most Popular Services</h2>
@@ -130,55 +183,57 @@ const HomePage = () => {
             </button>
           </div>
           
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div 
-              className="flex gap-6 transition-transform duration-300" 
-              style={{ transform: `translateX(-${currentIndex * 25}%)` }}
+              className="flex gap-6 transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${(currentIndex / services.length) * 100}%)` }}
             >
-              {services.map((service, index) => (
-                <div key={service.id} className="min-w-[calc(25%-1rem)]">
+              {services.map((service) => (
+                <div key={service.id} className="min-w-[25%]">
                   <ServiceCard {...service} />
                 </div>
               ))}
             </div>
-            
+
+            {/* Carousel Navigation Buttons */}
             <button 
               onClick={prevSlide} 
               disabled={currentIndex === 0}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white shadow-lg rounded-full p-2 ${
+              className={`absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 shadow-xl rounded-full p-3 transition-all ${
                 currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
               }`}
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={28} className="text-gray-700" />
             </button>
-            
+
             <button 
               onClick={nextSlide}
               disabled={currentIndex === maxIndex}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white shadow-lg rounded-full p-2 ${
+              className={`absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 shadow-xl rounded-full p-3 transition-all ${
                 currentIndex === maxIndex ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
               }`}
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={28} className="text-gray-700" />
             </button>
-          </div>
-          
-          <div className="flex justify-center mt-8 gap-2">
-            {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-              <button
-                key={index}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? 'w-8 bg-teal-500' : 'w-2 bg-gray-300'
-                }`}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
+
+            {/* Carousel Dots */}
+            <div className="flex justify-center mt-8 gap-2">
+              {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`h-2 rounded-full transition-all ${
+                    index === currentIndex ? 'w-8 bg-teal-500' : 'w-2 bg-gray-300'
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-[#edecd4d0]">
+      <section id="Features" className="py-16 bg-[#edecd4d0]">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="text-3xl font-bold mb-8 text-teal-600">
@@ -186,7 +241,7 @@ const HomePage = () => {
             </h2>
             <div className="space-y-6">
               {features.map((feature) => (
-                <div key={feature.id} className="bg-gray-300 opacity-70 p-6 rounded-lg shadow-md flex items-start space-x-4 ">
+                <div key={feature.id} className="bg-gray-300 opacity-70 p-6 rounded-lg shadow-md flex items-start space-x-4">
                   <div className="text-green-500 text-2xl">✔</div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
@@ -198,12 +253,12 @@ const HomePage = () => {
           </div>
           <div className="relative flex justify-center items-center">
             <div className="relative flex space-x-4">
-              {["public/imges/discover imag.png"].map((image, index) => (
+              {["/imges/discover imag.png"].map((image, index) => (
                 <img 
                   key={index} 
                   src={image} 
                   alt={`Feature ${index + 1}`} 
-                  className="w-3xl h-fit object-cover  "
+                  className="w-3xl h-fit object-cover"
                 />
               ))}
             </div>
@@ -212,7 +267,7 @@ const HomePage = () => {
       </section>
 
       {/* Categories Section */}
-      <div className="bg-white py-12">
+      <div id="Categories" className="bg-white py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-semibold text-left mb-8">
             Here are Something You'd Need
@@ -251,7 +306,7 @@ const HomePage = () => {
 
       {/* CTA Section */}
       <div className="bg-gray-800 py-16 text-center relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 paddingBottom-16 h-96 flex flex-col justify-center items-center">
+        <div className="container mx-auto px-4 relative z-10 h-96 flex flex-col justify-center items-center">
           <h2 className="text-3xl font-semibold text-white mb-4">Ready to Get Started?</h2>
           <p className="text-gray-300 mb-8">
             Sign Up or Login to Explore Various Features that our Sellers & Freelancers Experience. It's Just Free
@@ -267,7 +322,7 @@ const HomePage = () => {
       </div>
 
       {/* Trending Sellers Section */}
-      <section className="py-16">
+      <section id="Sellers" className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8">Trending Sellers</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -289,7 +344,7 @@ const HomePage = () => {
       </section>
 
       {/* Resources Section */}
-      <section className="py-32 bg-gray-100">
+      <section id="Resources" className="py-32 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8">Have Some Doubts To Get Started?</h2>
           <div className="grid md:grid-cols-3 gap-6">
