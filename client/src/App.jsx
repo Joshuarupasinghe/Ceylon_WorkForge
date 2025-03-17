@@ -1,30 +1,25 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import ReactDOM from 'react-dom/client';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './pages/login';
 import Freelancer from './pages/Freelancer';
 import SuperAdminDashboard from './pages/SuperAdmin';
 import ClientDashboard from './pages/ClientDashboard';
+import './index.css';
 
-// import AdminDashboard from './AdminDashboard';
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/free" element={<Freelancer />} />
-        <Route path="/superadmin" element={<SuperAdminDashboard />} />
-        <Route path="/client" element={<ClientDashboard />} />
-
-        {/* <Route path="/admin" element={<AdminDashboard />} /> */}
-      </Routes>
-    </div>
+    <Routes>
+      {/* Redirect root ("/") to Sign In page */}
+      <Route path="/" element={<Navigate to="/auth/login" />} />
+      
+      {/* Other routes */}
+      <Route path="/auth/login" element={<LoginPage />} />
+      <Route path="/free" element={<Freelancer />} />
+      <Route path="/superadmin" element={<SuperAdminDashboard />} />
+      <Route path="/client" element={<ClientDashboard />} />
+    </Routes>
   );
 }
 
 export default App;
-
-// Render the application
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);

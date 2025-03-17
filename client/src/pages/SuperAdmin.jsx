@@ -5,7 +5,6 @@ import DashboardContent from '../components/DashboardContent';
 import UsersComponent from '../components/UsersComponent';
 import SuperAdminBilling from '../components/SuperBilling';
 
-
 const SuperAdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   
@@ -17,7 +16,7 @@ const SuperAdminDashboard = () => {
       onClick={() => setActiveTab(label.toLowerCase())}
     >
       <Icon className="w-5 h-5" />
-      <span>{label}</span>
+      <span className="hidden md:block">{label}</span>
     </div>
   );
 
@@ -26,7 +25,7 @@ const SuperAdminDashboard = () => {
       case 'dashboard':
         return <DashboardContent />;
       case 'users':
-        return <UsersComponent/>;
+        return <UsersComponent />;
       case 'billing':
         return <SuperAdminBilling />;
       case 'settings':
@@ -39,41 +38,49 @@ const SuperAdminDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
-      <div className="w-64 bg-gray-800 p-6 flex flex-col space-y-6">
-        <h1 className="text-2xl font-bold text-teal-500">Super Admin</h1>
-        <SidebarLink icon={BarChart2} label="Dashboard" />
-        <SidebarLink icon={Users} label="Users" />
-        <SidebarLink icon={CreditCard} label="Billing" />
-        <SidebarLink icon={Settings} label="Settings" />
+      <div className="w-64 bg-gray-800 p-6 flex flex-col space-y-6 overflow-hidden md:h-screen">
+        <h1 className="text-2xl font-bold text-teal-500 mb-6">Super Admin</h1>
+
+        <div className="space-y-4">
+          <SidebarLink icon={BarChart2} label="Dashboard" />
+          <SidebarLink icon={Users} label="Users" />
+          <SidebarLink icon={CreditCard} label="Billing" />
+          <SidebarLink icon={Settings} label="Settings" />
+        </div>
+
         <div className="mt-auto">
           <SidebarLink icon={LogOut} label="Logout" />
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">{renderContent()}</div>
+      <div className="flex-1 p-6 overflow-y-auto bg-gray-900">
+        {/* Display content dynamically */}
+        {renderContent()}
+      </div>
     </div>
   );
 };
 
-
-
+// User Management Page
 const UserManagement = () => (
-  <div>
+  <div className="space-y-4">
     <h2 className="text-2xl font-bold">User Management</h2>
     <p className="text-gray-400">Manage users and roles</p>
   </div>
 );
 
+// Billing Page
 const Billing = () => (
-  <div>
+  <div className="space-y-4">
     <h2 className="text-2xl font-bold">Billing & Transactions</h2>
     <p className="text-gray-400">Monitor platform revenue</p>
   </div>
 );
 
+// Settings Page
 const SettingsPage = () => (
-  <div>
+  <div className="space-y-4">
     <h2 className="text-2xl font-bold">Platform Settings</h2>
     <p className="text-gray-400">Adjust platform configurations</p>
   </div>

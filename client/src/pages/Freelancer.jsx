@@ -1,14 +1,22 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useRef } from 'react';
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { Home, FileText, CreditCard, BarChart2, Settings, Bell, Search, Camera, Send, Menu, X } from 'lucide-react';
 import BillingSettings from '../components/BillingSettings';
 import FreelanceChatRoom from '../components/FreelanceChatRoom';
 import FreelanceProjects from '../components/projects';
-import SettingsComponent from '../components/Settings Component';
+import SettingsComponent from '../components/SettingsComponent';
 
+// Import shadcn/ui components
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
+import { Avatar, AvatarImage, AvatarFallback } from '../components/ui/Avatar';
+import { Separator } from '../components/ui/Separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
 
-
+import { PieChart, Pie, Cell } from 'recharts'; // Import PieChart and Pie components from recharts
+import { BarChart, Bar } from 'recharts';
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [profileImage, setProfileImage] = useState(null);
@@ -61,11 +69,24 @@ const AdminDashboard = () => {
     { name: 'May', value: 16000 }
   ];
 
+  const freelancerStatusData = [
+    { name: "Available", value: 10 },
+    { name: "Busy", value: 5 },
+    { name: "On Hold", value: 3 },
+  ];
+
+  const freelancerSkillsData = [
+    { name: "Web Development", value: 12 },
+    { name: "Graphic Design", value: 8 },
+    { name: "SEO", value: 5 },
+    { name: "Mobile Development", value: 10 },
+  ];
+
   const SidebarLink = ({ icon: Icon, label, active }) => (
     <div 
       className={`flex items-center space-x-2 p-3 rounded cursor-pointer ${
-        active ? 'text-teal-500' : 'text-gray-400'
-      } hover:text-teal-500 transition-colors duration-200`}
+        active ? 'bg-gray-700 text-teal-500' : 'text-gray-400'
+      } hover:bg-gray-700 hover:text-teal-500 transition-colors duration-200`}
       onClick={() => {
         setActiveTab(label.toLowerCase());
         setIsMobileMenuOpen(false);
@@ -77,20 +98,20 @@ const AdminDashboard = () => {
   );
 
   const StatCard = ({ title, value, percentage, trend = 'up', subtitle }) => (
-    <div className="bg-gray-800 rounded-lg p-4 md:p-6 shadow-lg">
-      <div className="flex justify-between items-start mb-2">
-        <div>
-          <p className="text-gray-400 text-sm">{title}</p>
-          {subtitle && <p className="text-gray-500 text-xs">{subtitle}</p>}
+    <Card className="bg-gray-800 border-gray-700">
+      <CardContent className="pt-6">
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <p className="text-gray-400 text-sm">{title}</p>
+            {subtitle && <p className="text-gray-500 text-xs">{subtitle}</p>}
+          </div>
+          <Badge variant={trend === 'up' ? 'success' : 'destructive'}>
+            {percentage}%
+          </Badge>
         </div>
-        <div className={`rounded-full w-8 h-8 flex items-center justify-center ${
-          trend === 'up' ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'
-        }`}>
-          {percentage}%
-        </div>
-      </div>
-      <div className="text-xl md:text-2xl font-bold text-white">{value}</div>
-    </div>
+        <div className="text-xl md:text-2xl font-bold text-white">{value}</div>
+      </CardContent>
+    </Card>
   );
 
   // Render the content for the active tab
@@ -98,65 +119,103 @@ const AdminDashboard = () => {
     switch (activeTab) {
       case 'home':
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <StatCard title="Current Jobs" value={statsData.currentJobs} percentage={100} />
-            <StatCard title="Skilled Users" value={statsData.skilledUsers} percentage={100} />
-            <StatCard title="Current Users" value={statsData.currentUsers} percentage={100} />
-            <StatCard 
-              title="Sales" 
-              subtitle="Total sales today"
-              value={`$${statsData.sales}`} 
-              percentage={100} 
-            />
-            <StatCard 
-              title="Cancellation"
-              value={statsData.cancellation} 
-              percentage={100}
-              trend="down" 
-            />
-            <StatCard 
-              title="User Satisfaction"
-              value={statsData.satisfaction} 
-              percentage={100} 
-            />
+          <div className="space-y-6">
+            {/* Stat Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <StatCard title="Current Jobs" value={statsData.currentJobs} percentage={100} />
+              <StatCard title="Skilled Users" value={statsData.skilledUsers} percentage={100} />
+              <StatCard title="Current Users" value={statsData.currentUsers} percentage={100} />
+              <StatCard 
+                title="Sales" 
+                subtitle="Total sales today"
+                value={`$${statsData.sales}`} 
+                percentage={100} 
+              />
+              <StatCard 
+                title="Cancellation"
+                value={statsData.cancellation} 
+                percentage={100}
+                trend="down" 
+              />
+              <StatCard 
+                title="User Satisfaction"
+                value={statsData.satisfaction} 
+                percentage={100} 
+              />
+            </div>
+
+            {/* Monthly Revenue Line Chart */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Monthly Revenue</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={lineChartData}>
+                      <XAxis dataKey="name" stroke="#666" />
+                      <YAxis stroke="#666" />
+                      <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: 'white' }} />
+                      <Line type="monotone" dataKey="value" stroke="#10B981" strokeWidth={2} dot={{ r: 4 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Stats Comparison Bar Chart
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Stats Comparison</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={barChartData}>
+                      <XAxis dataKey="category" stroke="#666" />
+                      <YAxis stroke="#666" />
+                      <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: 'white' }} />
+                      <Bar dataKey="value" fill="#10B981" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card> */}
+
+            
+            {/* Freelancer Skills Pie Chart */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Freelancer Skills Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="115%" height="110%">
+                    <PieChart>
+                      <Pie
+                        data={freelancerSkillsData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label
+                        labelLine={false}
+                      >
+                        {freelancerSkillsData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={['#3B82F6', '#9333EA', '#F59E0B', '#6EE7B7'][index]} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         );
-
+        
       case 'projects':
         return <FreelanceProjects />;
-      case '': 
-            return (  
-                <div className="p-6 bg-gray-900 min-h-screen text-gray-300">
-      <h2 className="text-2xl font-semibold mb-4">Freelance Projects</h2>
-      <div className="space-y-4">
-        {projects.map(project => (
-          <div key={project.id} className="bg-gray-800 p-4 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold">{project.title}</h3>
-            <p className="text-gray-400">Client: {project.client}</p>
-            <p className="text-gray-300">Status: <span className={getStatusClass(project.status)}>{project.status}</span></p>
-            
-            {project.status === 'In Progress' && (
-              <div className="mt-4">
-                <label className="block text-sm mb-2">Submit Work:</label>
-                <input type="file" onChange={(e) => handleFileUpload(project.id, e)} className="border p-2 rounded bg-gray-700" />
-              </div>
-            )}
-
-            {project.submissions.length > 0 && (
-              <div className="mt-4">
-                <h4 className="text-lg font-semibold">Submitted Files:</h4>
-                <ul className="list-disc pl-5 text-gray-400">
-                  {project.submissions.map((file, index) => (
-                    <li key={index}>{file}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-            );
 
       case 'stats':
         return (
@@ -171,66 +230,130 @@ const AdminDashboard = () => {
                 />
               ))}
             </div>
-            <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={lineChartData}>
-                    <XAxis dataKey="name" stroke="#666" />
-                    <YAxis stroke="#666" />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-           
+            
+            {/* Monthly Revenue Line Chart */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Monthly Revenue</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={lineChartData}>
+                      <XAxis dataKey="name" stroke="#666" />
+                      <YAxis stroke="#666" />
+                      <Tooltip contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: 'white' }} />
+                      <Line type="monotone" dataKey="value" stroke="#10B981" strokeWidth={2} dot={{ r: 4 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Freelancer Status Pie Chart */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Freelancer Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="115%" height="110%">
+                    <PieChart>
+                      <Pie
+                        data={freelancerStatusData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label
+                        labelLine={false}
+                      >
+                        {freelancerStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={['#10B981', '#EF4444', '#FBBF24'][index]} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Freelancer Skills Pie Chart */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Freelancer Skills Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={freelancerSkillsData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label
+                        labelLine={false}
+                      >
+                        {freelancerSkillsData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={['#3B82F6', '#9333EA', '#F59E0B', '#6EE7B7'][index]} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         );
-
-    
       
       case 'billings':
         return <BillingSettings />;
       
-
       case 'settings':
         return <SettingsComponent />;
 
-
       case 'chat':
         return <FreelanceChatRoom />;
-        
-        
-       
     }
   };
 
-
-
   return (
-    <div className="min-h-screen w-full-auto bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen w-full bg-gray-900 text-white flex flex-col">
       {/* Mobile Menu Button */}
       <div className="md:hidden fixed top-4 left-4 z-50">
-        <button 
+        <Button 
+          variant="ghost"
+          size="icon"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 bg-gray-800 rounded-lg"
+          className="bg-gray-800 text-white hover:bg-gray-700"
         >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </Button>
       </div>
 
-      <div className="flex flex-1 h-screen overflow-hidden">
-
+      <div className="flex h-screen overflow-hidden">
         {/* Sidebar - Fixed on desktop, Drawer on mobile */}
-<aside className={`
-  fixed md:sticky top-0 max-h-screen md:h-screen overflow-y-auto
-  w-64 bg-gray-800 p-4 z-40
-  transition-transform duration-300 ease-in-out
-  ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-`}>
-
+        <aside
+          className={`
+            fixed md:sticky top-0 left-0 h-screen overflow-y-auto
+            w-64 bg-gray-800 p-4 z-40
+            transition-transform duration-300 ease-in-out
+            ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          `}
+        >
           <div className="flex flex-col h-full">
-            <div className="space-y-2 mt-12 md:mt-0">
+            <div className="flex items-center space-x-2 mb-6 mt-8 md:mt-0">
+              <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center">
+                <span className="font-bold text-white">FD</span>
+              </div>
+              <h2 className="text-xl font-bold text-white">FreeDash</h2>
+            </div>
+            <Separator className="my-4 bg-gray-700" />
+            <div className="space-y-1">
               <SidebarLink icon={Home} label="Home" active={activeTab === 'home'} />
               <SidebarLink icon={FileText} label="Projects" active={activeTab === 'projects'} />
               <SidebarLink icon={CreditCard} label="Billings" active={activeTab === 'billings'} />
@@ -240,7 +363,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </aside>
-
+  
         {/* Main Content - Scrollable */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 md:p-8 mt-12 md:mt-0 w-full">
@@ -248,19 +371,18 @@ const AdminDashboard = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
               <div className="flex items-center space-x-4">
                 <div 
-                  className="relative w-12 h-12 rounded-full overflow-hidden cursor-pointer group"
+                  className="relative cursor-pointer"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <img
-                    src={profileImage || "/api/placeholder/48/48"}
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
+                  <Avatar className="w-12 h-12 border-2 border-gray-700">
+                    <AvatarImage src={profileImage || "/api/placeholder/48/48"} alt="Profile" />
+                    <AvatarFallback className="bg-gray-700 text-white">DD</AvatarFallback>
+                  </Avatar>
                   {isHovering && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                      <Camera className="w-6 h-6 text-white" />
+                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                      <Camera className="w-5 h-5 text-white" />
                     </div>
                   )}
                   <input
@@ -280,18 +402,18 @@ const AdminDashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4 w-full md:w-auto">
+              <div className="flex items-center space-x-3 w-full md:w-auto">
                 <div className="relative flex-1 md:flex-none">
-                  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input 
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <Input 
                     type="text"
-                    className="w-full md:w-auto pl-10 pr-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="pl-9 pr-4 py-2 bg-gray-800 border-gray-700 text-white w-full md:w-64"
                     placeholder="Search for users"
                   />
                 </div>
-                <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200">
-                  <Bell className="w-5 h-5 text-gray-400" />
-                </button>
+                <Button variant="ghost" size="icon" className="p-2 hover:bg-gray-700 text-gray-400">
+                  <Bell className="w-5 h-5" />
+                </Button>
               </div>
             </div>
 
