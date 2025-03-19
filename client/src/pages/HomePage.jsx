@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+
 const ServiceCard = ({ title, imageUrl, color }) => (
   <div className={`${color} rounded-lg overflow-hidden h-64 transition-transform hover:scale-105 cursor-pointer`}>
     <div className="relative h-full">
@@ -105,7 +106,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-24">
       {/* Hero Section */}
       <header className="bg-gray-900 text-white py-16 relative">
         <div className="container mx-auto px-4">

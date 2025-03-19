@@ -167,7 +167,7 @@ const FullDesktopView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 flex flex-col">
+    <div className="min-h-screen bg-black text-gray-100 flex flex-col pt-20">
       {/* Header */}
       <header className="bg-gray-950 border-b border-gray-800 py-4">
         <div className="container mx-auto px-6 flex justify-between items-center">
