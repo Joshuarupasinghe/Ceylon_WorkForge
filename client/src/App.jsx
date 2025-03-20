@@ -11,6 +11,7 @@ import Layout from './components/Layout';
 import BlogPage from './pages/bloge';
 import FreelancePage from './pages/freelancepage';
 
+
 function App() {
   return (
     <Routes>
@@ -23,12 +24,15 @@ function App() {
         <Route path="/loading" element={<LoadingScreen />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
+       
+        
       </Route>
       
       {/* Routes without the Layout */}
       <Route path="/oauth2-callback" element={<OauthSignUp />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
+      
 
     </Routes>
   );
