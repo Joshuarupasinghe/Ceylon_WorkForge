@@ -29,7 +29,7 @@ export default function AuthCallback() {
           firstName: response.data.user.firstName || '',
           lastName: response.data.user.lastName || '',
           email: response.data.user.email || '',
-          picture: response.data.picture,
+          picture: response.data.profilePicture,
           role: role || response.data.user.role,
         };
         

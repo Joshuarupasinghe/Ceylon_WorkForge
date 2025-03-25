@@ -47,6 +47,7 @@ const ProfileForm = () => {
             firstName: userData.firstName || "",
             lastName: userData.lastName || "",
             email: userData.email || "",
+            profileImageUrl: userData.picture || "",
           }));
 
           // Set image preview if picture exists
