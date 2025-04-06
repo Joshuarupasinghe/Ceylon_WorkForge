@@ -23,3 +23,7 @@ function App() {
         <Route path="/client" element={<ClientDashboard />} />
       </Routes>
     </div>
+  );
+}
+
+export default App;
