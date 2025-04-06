@@ -7,6 +7,7 @@ import ClientDashboard from './pages/ClientDashboard';
 import './index.css';
 
 
+
 function App() {
   return (
     <Routes>
@@ -18,6 +19,8 @@ function App() {
       <Route path="/free" element={<Freelancer />} />
       <Route path="/superadmin" element={<SuperAdminDashboard />} />
       <Route path="/client" element={<ClientDashboard />} />
+      
+
     </Routes>
   );
 }
