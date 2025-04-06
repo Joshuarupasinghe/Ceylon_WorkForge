@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const path = require('path'); // Add this import
 const config = require('./config');
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile'); // Add this import
 
 // Initialize Express app
 const app = express();
@@ -12,6 +14,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Log middleware for development
 if (config.environment === 'development') {
@@ -31,6 +36,7 @@ mongoose.connect(config.mongodbUri)
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/api/profile', profileRoutes); // Add profile routes
 
 // Basic route for testing
 app.get('/', (req, res) => {

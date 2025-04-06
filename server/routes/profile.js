@@ -1,16 +1,13 @@
-// Backend route handler (Express)
-// routes/profile.js
-
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const upload = require('../middleware/upload');
 const Profile = require('../models/Profile');
-const User = require('../models/User');
 
 // @route   POST api/profile
 // @desc    Create or update user profile
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, upload.single('profileImage'), async (req, res) => {
   try {
     const {
       gender,
@@ -20,13 +17,12 @@ router.post('/', auth, async (req, res) => {
       certificates,
       service,
       subCategory,
-      specialNotes,
-      profileImage
+      specialNotes
     } = req.body;
 
     // Build profile object
     const profileFields = {
-      user: req.user.id, // Assuming auth middleware sets req.user
+      user: req.user.id,
       gender,
       contactNumber,
       education,
@@ -35,9 +31,13 @@ router.post('/', auth, async (req, res) => {
       service,
       subCategory,
       specialNotes,
-      profileImage,
       updatedAt: Date.now()
     };
+
+    // Add profile image path if a file was uploaded
+    if (req.file) {
+      profileFields.profileImage = `/uploads/profiles/${req.file.filename}`;
+    }
 
     // Check if profile exists
     let profile = await Profile.findOne({ user: req.user.id });
@@ -55,6 +55,24 @@ router.post('/', auth, async (req, res) => {
     // Create new profile
     profile = new Profile(profileFields);
     await profile.save();
+    
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/profile
+// @desc    Get current user profile
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    
+    if (!profile) {
+      return res.status(404).json({ message: 'Profile not found' });
+    }
     
     res.json(profile);
   } catch (err) {

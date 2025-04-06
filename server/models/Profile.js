@@ -5,7 +5,6 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true
   },
   gender: { 
     type: String, 
@@ -47,7 +46,7 @@ const ProfileSchema = new mongoose.Schema({
   }
 });
 
-// Create a compound index to ensure uniqueness and faster queries
-ProfileSchema.index({ user: 1 });
+ProfileSchema.index({ user: 1 }, { unique: true });
 
-module.exports = mongoose.model('Profile', ProfileSchema);
+const ProfileModel = mongoose.model('Profile', ProfileSchema);
+module.exports = ProfileModel;

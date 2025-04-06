@@ -74,4 +74,28 @@ export const authService = {
   }
 };
 
+export const profileService = {
+  createOrUpdateProfile: (profileData) => {
+    // Handle file uploads using FormData
+    const formData = new FormData();
+    
+    // Add all profile fields to FormData
+    Object.keys(profileData).forEach(key => {
+      if (key === 'profileImage' && profileData[key] instanceof File) {
+        formData.append(key, profileData[key]);
+      } else if (profileData[key] !== null && profileData[key] !== undefined) {
+        formData.append(key, profileData[key]);
+      }
+    });
+    
+    return api.post('/api/profile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
+  
+  getProfile: () => api.get('/api/profile')
+};
+
 export default api;
