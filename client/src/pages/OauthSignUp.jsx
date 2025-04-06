@@ -1,17 +1,35 @@
-import { FcGoogle } from "react-icons/fc";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 export default function OauthSignUp() {
+  const navigate = useNavigate();
+  const [loading] = useState(false);
+
+  const handleEmailSignup = () => {
+    navigate("/signup");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="flex w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl">
-        {/* Left Section */}
-        <div
-          className="hidden md:flex w-1/2 bg-cover p-20 text-white"
-          style={{ backgroundImage: "url('/imges/login.png')" }}
-        >
-          <div className="self-center">
-            <h1 className="text-6xl font-bold mb-10">Design with us</h1>
-            <p className="text-3xl leading-relaxed">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
+      {/* Container with reduced max-width */}
+      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-2xl overflow-hidden shadow-xl">
+        
+        {/* Left Section (hidden on small screens) */}
+        <div className="relative hidden md:flex md:w-2/5">
+          {/* Background Image */}
+          <img
+            src="/imges/login4.avif"
+            alt="Background"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Semi-transparent overlay */}
+          <div className="absolute inset-0 bg-transparent bg-opacity-40"></div>
+
+          {/* Text Content */}
+          <div className="relative p-8 text-white flex flex-col justify-center">
+            <h1 className="text-4xl font-bold mb-4">Design with us</h1>
+            <p className="text-base leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
               lobortis maximus nunc, ac rhoncus odio congue quis. Sed ac semper
               orci, eu porttitor lacus.
@@ -20,29 +38,30 @@ export default function OauthSignUp() {
         </div>
 
         {/* Right Section */}
-        <div className="flex w-full md:w-1/2 p-16">
+        <div className="flex w-full md:w-3/5 p-6 md:p-10">
           <div className="w-full">
-            <h2 className="text-5xl font-bold text-gray-700 text-center mb-10">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-700 text-center mb-8">
               Sign Up for Ceylon WorkForce
             </h2>
 
             {/* Continue with Email Button */}
-            <button className="w-full bg-gray-900 text-white py-4 text-2xl rounded-xl hover:bg-opacity-90 mb-6">
+            <button
+              className="w-full bg-gray-900 text-white py-3 text-lg md:text-xl rounded-lg hover:bg-gray-800 mb-4"
+              onClick={handleEmailSignup}
+              disabled={loading}
+            >
               Continue with Email
             </button>
 
             {/* Divider */}
-            <div className="flex items-center justify-center my-8">
+            <div className="flex items-center justify-center my-6">
               <hr className="w-full border-gray-300" />
-              <span className="px-6 text-gray-500 text-xl">OR</span>
+              <span className="px-4 text-gray-500 text-base">OR</span>
               <hr className="w-full border-gray-300" />
             </div>
 
-            {/* Continue with Google Button */}
-            <button className="w-full flex items-center justify-center border border-gray-300 py-4 text-2xl rounded-xl hover:bg-gray-100">
-              <FcGoogle size={32} className="mr-4" />
-              Continue with Google
-            </button>
+            {/* Google Auth Button */}
+            <GoogleAuthButton />
           </div>
         </div>
       </div>
