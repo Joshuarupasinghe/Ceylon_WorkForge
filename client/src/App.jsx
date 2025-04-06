@@ -4,6 +4,10 @@ import OauthSignUp from './pages/OauthSignUp';
 import SignUp from './pages/SignUp'; 
 import ProfileForm from './pages/ProfileForm';
 import AuthCallback from './pages/AuthCallback';
+import Freelancer from './pages/Freelancer';
+import SuperAdminDashboard from './pages/SuperAdmin';
+import ClientDashboard from './pages/ClientDashboard';
+import './index.css';
 
 function App() {
   return (
@@ -14,9 +18,8 @@ function App() {
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<ProfileForm />} />
+        <Route path="/free" element={<Freelancer />} />
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/client" element={<ClientDashboard />} />
       </Routes>
     </div>
-  );
-}
-
-export default App;
