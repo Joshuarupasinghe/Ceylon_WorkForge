@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.1",
-    "axios": "^1.7.9",
     "lucide-react": "^0.474.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.4",
-    "react-icons": "^4.12.0",
-    "recharts": "^2.15.1",
+    "react-slick": "^0.30.3",
+    "react-tsparticles": "^2.x.x",
+    "tsparticles": "^2.x.x",
     "tailwindcss": "^4.0.1"
   },
   "devDependencies": {
