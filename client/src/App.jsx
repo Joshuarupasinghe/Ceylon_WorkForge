@@ -29,7 +29,7 @@ function App() {
         <Route path="/loading" element={<LoadingScreen />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
-        <Route path="/free" element={<Freelancer />} />
+       
         
       </Route>
       
@@ -39,6 +39,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/superadmin" element={<SuperAdminDashboard />} />
       <Route path="/client" element={<ClientDashboard />} />
+      <Route path="/free" element={<Freelancer />} />
       
 
     </Routes>
