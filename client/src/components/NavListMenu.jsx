@@ -68,7 +68,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <Link to="/hire-designer" className="text-teal-400 hover:text-teal-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Hire a Freelacer</Link>
+            <Link to="/category" className="text-teal-400 hover:text-teal-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Hire a Freelacer</Link>
             <Link to="/find-jobs" className="text-teal-400 hover:text-teal-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Find Jobs</Link>
             <Link to="/blog" className="text-teal-400 hover:text-teal-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Blog</Link>
           </div>
