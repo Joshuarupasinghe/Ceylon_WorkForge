@@ -22,7 +22,7 @@ function App() {
     <Routes>
       {/* Routes that use the Layout with the Navbar */}
       <Route element={<Layout />}>
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfileForm />} />
         <Route path="/Category" element={<CategorySection />} />
         <Route path="/PostProject" element={<PostProjectForm />} />
