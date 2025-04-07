@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ParticlesBackground from "../components/ParticlesBackground";
 import CircularProgress from "../components/ CircularProgress";
 import ProgressPercentage from "../components/ProgressPercentage";
 
@@ -21,7 +20,7 @@ const LoadingScreen = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900">
       {/* Particle Effect */}
-      <ParticlesBackground />
+      
 
       <div className="flex flex-col items-center relative z-10">
         {/* Circular Progress with numeric percentage on top */}
