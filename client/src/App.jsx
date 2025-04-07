@@ -30,8 +30,6 @@ function App() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
         <Route path="/free" element={<Freelancer />} />
-        <Route path="/superadmin" element={<SuperAdminDashboard />} />
-        <Route path="/client" element={<ClientDashboard />} />
         
       </Route>
       
@@ -39,6 +37,8 @@ function App() {
       <Route path="/oauth2-callback" element={<OauthSignUp />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/superadmin" element={<SuperAdminDashboard />} />
+      <Route path="/client" element={<ClientDashboard />} />
       
 
     </Routes>
