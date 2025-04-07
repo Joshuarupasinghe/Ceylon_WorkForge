@@ -24,7 +24,6 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/profile" element={<ProfileForm />} />
         <Route path="/Category" element={<CategorySection />} />
         <Route path="/PostProject" element={<PostProjectForm />} />
         <Route path="/loading" element={<LoadingScreen />} />
@@ -36,11 +35,13 @@ function App() {
       
       {/* Routes without the Layout */}
       <Route path="/oauth2-callback" element={<OauthSignUp />} />
+      <Route path="/auth-callback" element={<AuthCallback />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/superadmin" element={<SuperAdminDashboard />} />
       <Route path="/client" element={<ClientDashboard />} />
       <Route path="/free" element={<Freelancer />} />
+      <Route path="/profile" element={<ProfileForm />} />
       
 
     </Routes>
