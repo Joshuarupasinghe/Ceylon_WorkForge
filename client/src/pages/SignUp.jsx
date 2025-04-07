@@ -56,9 +56,9 @@ export default function SignUp1() {
         {/* Left Section */}
         <div
           className="hidden md:flex flex-col justify-center items-start p-10 text-white bg-cover"
-          style={{ backgroundImage: "url('/imges/login.png')" }}
+          style={{ backgroundImage: "url('/imges/login1.png')" }}
         >
-          <h2 className="text-3xl font-bold mb-4">Design with us</h2>
+          <h2 className="text-3xl font-bold mb-4 text-black">Design with us</h2>
           <p className="text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
             lobortis maximus nunc, ac rhoncus odio congue quis. Sed ac semper
