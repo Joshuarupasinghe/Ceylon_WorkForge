@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { profileService } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const ProfileForm = () => {
+const FreelancerProfileForm = () => {
   const navigate = useNavigate();
   const [isNewUser, setIsNewUser] = useState(false);
   const [formData, setFormData] = useState({
@@ -367,4 +367,4 @@ const ProfileForm = () => {
   );
 };
 
-export default ProfileForm;
+export default FreelancerProfileForm;

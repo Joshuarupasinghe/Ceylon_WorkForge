@@ -28,11 +28,11 @@ export default function OauthSignUp() {
 
           {/* Text Content */}
           <div className="relative p-8 text-white flex flex-col justify-center">
-            <h1 className="text-4xl font-bold mb-4">Design with us</h1>
+            <h1 className="text-4xl font-bold mb-4">Freelance. Reinvented.</h1>
             <p className="text-base leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-              lobortis maximus nunc, ac rhoncus odio congue quis. Sed ac semper
-              orci, eu porttitor lacus.
+            Ceylon WorkForce is the tech-driven platform for modern freelancers. Built for 
+            speed, scale, and serious talent we connect creators and clients through smart 
+            systems and real-time collaboration.
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@ export default function OauthSignUp() {
         <div className="flex w-full md:w-3/5 p-6 md:p-10">
           <div className="w-full">
             <h2 className="text-2xl md:text-4xl font-bold text-gray-700 text-center mb-8">
-              Sign Up for Ceylon WorkForce
+              Sign Up or Login for Ceylon WorkForce
             </h2>
 
             {/* Continue with Email Button */}

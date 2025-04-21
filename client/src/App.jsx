@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/Login';  
 import OauthSignUp from './pages/OauthSignUp';  
 import SignUp from './pages/SignUp'; 
-import ProfileForm from './pages/ProfileForm'; 
+import ProfileForm from './pages/FreelancerProfileForm'; 
 import HomePage from './pages/HomePage'; 
 import CategorySection from './pages/CategorySection';
 import PostProjectForm from './pages/PostProject';  

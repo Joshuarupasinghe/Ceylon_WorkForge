@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {useNavigate } from "react-router-dom";
+
 
 
 
@@ -21,6 +23,7 @@ const ServiceCard = ({ title, imageUrl, color }) => (
 );
 
 const HomePage = () => {
+  const navigate = useNavigate();
   // Search-related states
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
@@ -134,7 +137,7 @@ const HomePage = () => {
                 </button>
                 {/* Search Results Dropdown */}
                 {filteredResults.length > 0 && (
-                  <div className="absolute top-14 left-0 w-full bg-white shadow-lg rounded-lg overflow-hidden z-10">
+                  <div className="absolute top-14 left-0 w-full bg-gray-600 shadow-lg rounded-lg overflow-hidden z-10">
                     {filteredResults.map((result, index) => (
                       <div 
                         key={index} 
@@ -179,7 +182,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-bold">Most Popular Services</h2>
-            <button className="text-teal-500 flex items-center">
+            <button className="text-teal-500 flex items-center" onClick={() => navigate("/Category")}>
               View All
               <ChevronRight className="ml-1" />
             </button>
@@ -272,7 +275,7 @@ const HomePage = () => {
       <div id="Categories" className="bg-white py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-semibold text-left mb-8">
-            Here are Something You'd Need
+            Here are Something You&apos;d Need
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {categoriesData.map((category, index) => (
@@ -296,7 +299,7 @@ const HomePage = () => {
             ))}
           </div>
           <div className="mt-6 text-left">
-            <a href="#" className="text-teal-500 hover:text-teal-700 font-medium inline-flex items-center">
+            <a href="/Category" className="text-teal-500 hover:text-teal-700 font-medium inline-flex items-center">
               More Categories
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 ml-1">
                 <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
@@ -313,8 +316,8 @@ const HomePage = () => {
           <p className="text-gray-300 mb-8">
             Sign Up or Login to Explore Various Features that our Sellers & Freelancers Experience. It's Just Free
           </p>
-          <a href="#" className="bg-teal-500 hover:bg-teal-300 text-white font-bold py-2 px-4 rounded">
-            Get Started It's Free
+          <a href="/oauth2-callback" className="bg-teal-500 hover:bg-teal-300 text-white font-bold py-2 px-4 rounded">
+            Get Started It&apos;s Free
           </a>
         </div>
         <div className="absolute inset-0 opacity-20">
