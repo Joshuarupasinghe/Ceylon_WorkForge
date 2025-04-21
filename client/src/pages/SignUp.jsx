@@ -48,8 +48,6 @@ export default function SignUp1() {
     }
   };
 
-  // Rest of your component remains the same...
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl bg-white shadow-lg rounded-2xl overflow-hidden">
