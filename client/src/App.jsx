@@ -13,7 +13,7 @@ import FreelancePage from './pages/freelancepage';
 import AuthCallback from './pages/AuthCallback';
 import Freelancer from './pages/Freelancer';
 import SuperAdminDashboard from './pages/SuperAdmin';
-import ClientDashboard from './pages/ClientDashboard';
+import ClientDashboard from './pages/client/ClientDashboard';
 import './index.css';
 
 
@@ -39,7 +39,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/superadmin" element={<SuperAdminDashboard />} />
-      <Route path="/client" element={<ClientDashboard />} />
+      <Route path="/client/dashboard" element={<ClientDashboard />} />
       <Route path="/free" element={<Freelancer />} />
       <Route path="/profile" element={<ProfileForm />} />
       

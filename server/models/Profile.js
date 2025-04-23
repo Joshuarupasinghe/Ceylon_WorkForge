@@ -37,9 +37,6 @@ const ProfileSchema = new mongoose.Schema({
   specialNotes: { 
     type: String 
   },
-  profileImage: { 
-    type: String // Store the image path or URL
-  },
   updatedAt: { 
     type: Date, 
     default: Date.now 

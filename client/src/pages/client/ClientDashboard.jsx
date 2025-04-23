@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Bell, Menu, CreditCard, Settings, User, Search, Calendar, ChevronRight, MessageSquare, Briefcase, Users } from "lucide-react";
 
 export default function ClientDashboard() {
