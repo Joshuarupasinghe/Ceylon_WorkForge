@@ -14,7 +14,7 @@ import BlogPage from './pages/bloge';
 import FreelancePage from './pages/freelancepage';
 import AuthCallback from './pages/AuthCallback';
 import Freelancer from './pages/Freelancer';
-import SuperAdminDashboard from './pages/SuperAdmin';
+import SuperAdminDashboard from './pages/superadmin/SuperAdmin';
 import ClientDashboard from './pages/client/ClientDashboard';
 import ClientProfile from './pages/client/ClientProfile';
 import './index.css';
