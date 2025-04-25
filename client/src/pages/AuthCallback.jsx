@@ -34,7 +34,7 @@ export default function AuthCallback() {
         };
         
         localStorage.setItem('user', JSON.stringify(userData));
-        navigate('/profile');
+        navigate('/');
       } catch (err) {
         console.error('Auth validation error:', err);
         setError('Failed to validate your authentication. Please try again.');
