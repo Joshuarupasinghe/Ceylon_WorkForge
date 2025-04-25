@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {useNavigate } from "react-router-dom";
-
-
-
+import { useAuth } from '../contexts/AuthContext';
 
 const ServiceCard = ({ title, imageUrl, color }) => (
   <div className={`${color} rounded-lg overflow-hidden h-64 transition-transform hover:scale-105 cursor-pointer`}>
@@ -24,6 +22,16 @@ const ServiceCard = ({ title, imageUrl, color }) => (
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if(user) {
+      console.log("User role:", user.role);
+    }
+    else {
+      console.log("User not logged in");
+    }
+  }, [user]);
   // Search-related states
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
@@ -310,21 +318,23 @@ const HomePage = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gray-800 py-16 text-center relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 h-96 flex flex-col justify-center items-center">
-          <h2 className="text-3xl font-semibold text-white mb-4">Ready to Get Started?</h2>
-          <p className="text-gray-300 mb-8">
-            Sign Up or Login to Explore Various Features that our Sellers & Freelancers Experience. It's Just Free
-          </p>
-          <a href="/oauth2-callback" className="bg-teal-500 hover:bg-teal-300 text-white font-bold py-2 px-4 rounded">
-            Get Started It&apos;s Free
-          </a>
+      {!user && (
+        <div className="bg-gray-800 py-16 text-center relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10 h-96 flex flex-col justify-center items-center">
+            <h2 className="text-3xl font-semibold text-white mb-4">Ready to Get Started?</h2>
+            <p className="text-gray-300 mb-8">
+              Sign Up or Login to Explore Various Features that our Sellers & Freelancers Experience. It's Just Free
+            </p>
+            <a href="/oauth2-callback" className="bg-teal-500 hover:bg-teal-300 text-white font-bold py-2 px-4 rounded">
+              Get Started It&apos;s Free
+            </a>
+          </div>
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 left-0 bg-gray-700 w-40 h-40 rounded-full transform -translate-x-20 -translate-y-20"></div>
+            <div className="absolute bottom-0 right-0 bg-gray-700 w-40 h-40 rounded-full transform translate-x-20 translate-y-20"></div>
+          </div>
         </div>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 bg-gray-700 w-40 h-40 rounded-full transform -translate-x-20 -translate-y-20"></div>
-          <div className="absolute bottom-0 right-0 bg-gray-700 w-40 h-40 rounded-full transform translate-x-20 translate-y-20"></div>
-        </div>
-      </div>
+      )}
 
       {/* Trending Sellers Section */}
       <section id="Sellers" className="py-16">

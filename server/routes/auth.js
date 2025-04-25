@@ -68,7 +68,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     }
   );
 } else {
-  router.get('/google', (req, res) => {
+  router.get('/google', (req, res) => { 
     res.status(501).json({ message: 'Google authentication not configured on server' });
   });
 

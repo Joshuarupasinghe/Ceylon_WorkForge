@@ -185,7 +185,7 @@ const FreelancerProfileForm = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-3xl grid grid-cols-1 gap-6 sm:grid-cols-2"
       >
-        <h2 className="text-2xl font-semibold text-gray-800 sm:col-span-2 mb-4">Complete Your Profile</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 sm:col-span-2 mb-4">Become a Freelancer</h2>
 
         <div className="flex flex-col sm:col-span-2 items-center space-y-4">
           <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-2 border-gray-500 flex items-center justify-center">

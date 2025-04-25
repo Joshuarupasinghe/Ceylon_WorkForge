@@ -31,8 +31,9 @@ const Navbar = () => {
     if (authService.isAuthenticated()) {
       authService.getCurrentUser()
         .then(res => {
-          setUser(res.data);
-          localStorage.setItem('user', JSON.stringify(res.data));
+          const user = res.data.user;
+          setUser(user);
+          localStorage.setItem('user', JSON.stringify(user));
         })
         .catch(err => {
           console.error('Error fetching user:', err);
@@ -50,7 +51,7 @@ const Navbar = () => {
 
   const profilePath = user?.role === 'freelancer' ? '/freelancer/profile' : '/client/profile';
   const dashboardPath = user?.role === 'freelancer' ? '/freelancer/dashboard' : '/client/dashboard';
-
+  const isClient = user?.role === 'client';
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-800 shadow-lg py-2' : 'bg-slate-900 py-4'
@@ -123,6 +124,13 @@ const Navbar = () => {
                     >
                       Dashboard
                     </Link>
+                    {isClient && (
+                      <Link
+                      to='/profile'
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                      Become a freelancer
+                    </Link>)}
 
                     <button
                       onClick={() => {
