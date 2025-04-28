@@ -2,31 +2,65 @@ const mongoose = require('mongoose');
 
 const ServiceSchema = new mongoose.Schema({
   title: {
+    type: String, 
+    required: true, 
+    trim: true 
+  },
+  description: { 
+    type: String, 
+    required: true 
+  },
+  budget: { 
+    type: Number, 
+    required: true, 
+    min: 0 
+  },
+  deadline: { 
+    type: Date 
+  }, 
+  status: {
     type: String,
-    required: true,
-    trim: true
+    enum: ['Planning','In Progress','On Hold','Completed','Cancelled'],
+    default: 'Planning'
   },
-  description: {
-    type: String,
-    required: true
+  progress: { 
+    type: Number, 
+    min: 0, 
+    max: 100, 
+    default: 0 
   },
-  price: {
-    type: Number,
-    required: true
+  category: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Category',   
+    required: true 
   },
-  subcategory: {
-    type: mongoose.Schema.Types.ObjectId,
+  subcategory: { 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'Subcategory',
-    required: true
+    required: true 
   },
-  image: {
+  image: { 
+    type: String, 
+    default: '' 
+  },
+  createdBy: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
+  },
+  assignedTo: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User' 
+  },
+  
+
+  type: {
     type: String,
-    default: ''
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' // assuming you have a User model
+    enum: ['offer','request'],
+    required: true
   }
-}, { timestamps: true });
+}, {
+  timestamps: true
+});
 
 module.exports = mongoose.model('Service', ServiceSchema);

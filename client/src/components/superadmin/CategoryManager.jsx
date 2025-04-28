@@ -50,25 +50,6 @@ const CategoryManager = () => {
         if (!mainInput.trim()) return;
 
         try {
-            // const formData = new FormData();
-            // formData.append('name', mainInput.trim());
-            // formData.append('subcategories', JSON.stringify(subs));
-            // if (imageFile) {
-            //     formData.append('image', imageFile);
-            // }
-
-            // if (editingIdx === null) {
-            //     // create
-            //     await api.post('/api/categories', formData, {
-            //         headers: { 'Content-Type': 'multipart/form-data' }
-            //     });
-            // } else {
-            //     // update
-            //     const id = categories[editingIdx]._id;
-            //     await api.put(`/api/categories/${id}`, formData, {
-            //         headers: { 'Content-Type': 'multipart/form-data' }
-            //     });
-            // }
             const formData = new FormData();
             formData.append('name', mainInput.trim());
             formData.append('subcategories', JSON.stringify(subs));
@@ -97,7 +78,7 @@ const CategoryManager = () => {
     const handleEditClick = (idx) => {
         const cat = categories[idx];
         setMainInput(cat.name);
-        setSubsInput(cat.subcategories.join(', '));
+        setSubsInput(cat.subcategories.map(sc => sc.name).join(', '));
         setEditingIdx(idx);
         setPreviewUrl(cat.image || '');
         setImageFile(null);
@@ -210,11 +191,8 @@ const CategoryManager = () => {
                             {/* Sub-category Badges */}
                             <div className="flex flex-wrap gap-2">
                                 {cat.subcategories.map(sub => (
-                                    <span
-                                        key={sub}
-                                        className="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm"
-                                    >
-                                        {sub}
+                                    <span key={sub._id} className="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm">
+                                        {sub.name}
                                     </span>
                                 ))}
                             </div>
