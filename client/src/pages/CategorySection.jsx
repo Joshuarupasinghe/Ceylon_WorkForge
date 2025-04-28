@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { fetchCategories } from '../services/categoryService';
 
@@ -23,7 +23,6 @@ const categoriesData = [
 const CategoryPage = () => {
   const [categories, setCategories] = useState(categoriesData);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -59,13 +58,6 @@ const CategoryPage = () => {
 
     setCategories(filtered);
   }, [searchQuery]);
-
-  // Handle category selection
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    // This would typically navigate to a category detail page or update the UI
-    // For demo purposes, we're just storing the selected category
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 pt-24">
