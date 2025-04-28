@@ -7,6 +7,7 @@ const config = require('./config');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
 const CategoryRoutes = require('./routes/CategoryRoutes');
+const ServiceRoutes = require('./routes/ServiceRoutes');
 
 // Initialize Express app
 const app = express();
@@ -39,6 +40,8 @@ mongoose.connect(config.mongodbUri)
 app.use('/auth', authRoutes);
 app.use('/api/profile', profileRoutes); // Add profile routes
 app.use('/api/categories', CategoryRoutes); // Add category routes
+app.use('/api/services', ServiceRoutes); // Add service routes
+
 
 // serve static uploads
 app.use('/uploads/categories', express.static(path.join(__dirname, 'uploads/categories')));

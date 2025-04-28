@@ -4,18 +4,19 @@ const uploadCategory = require('../middleware/uploadCategory');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const Subcategory = require('../models/Subcategory');
 // const { isAdmin } = require('../middleware/auth'); // <-- your admin-check middleware
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/categories');
+        cb(null, 'uploads/categories');
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname));
     },
-  });
-  
-  const upload = multer({ storage });
+});
+
+const upload = multer({ storage });
 
 /** ----------------------------------------
  * @route   GET /api/categories
@@ -23,7 +24,9 @@ const storage = multer.diskStorage({
  ------------------------------------------ */
 router.get('/', async (req, res) => {
     try {
-        const categories = await Category.find().sort('name');
+        const categories = await Category.find()
+            .populate('subcategories')
+            .sort('name');
         res.status(200).json(categories);
     } catch (error) {
         console.error('Get all categories error:', error);
@@ -37,7 +40,8 @@ router.get('/', async (req, res) => {
 ------------------------------------------ */
 router.get('/:id', async (req, res) => {
     try {
-        const category = await Category.findById(req.params.id);
+        const category = await Category.findById(req.params.id)
+            .populate('subcategories');
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
@@ -61,11 +65,7 @@ router.post('/', /* isAdmin, */upload.single('image'), async (req, res) => {
         console.log('🛎️ req.file:', req.file && req.file.filename);
         let { name, subcategories } = req.body;
         if (typeof subcategories === 'string') {
-            try {
-                subcategories = JSON.parse(subcategories);
-            } catch {
-                subcategories = [];
-            }
+            subcategories = JSON.parse(subcategories);
         }
         const exists = await Category.findOne({ name });
         if (exists) {
@@ -73,10 +73,20 @@ router.post('/', /* isAdmin, */upload.single('image'), async (req, res) => {
         }
         const category = new Category({
             name,
-            subcategories,
             image: req.file ? `/uploads/categories/${req.file.filename}` : ''
         });
         await category.save();
+
+        const subDocs = await Promise.all(
+            subcategories.map(s =>
+                Subcategory.create({ name: s, category: category._id })
+            )
+        );
+
+        category.subcategories = subDocs.map(s => s._id);
+        await category.save();
+
+        await category.populate('subcategories');
         res.status(201).json(category);
     } catch (error) {
         console.error('Create category error:', error);
@@ -94,13 +104,10 @@ router.put('/:id', /* isAdmin, */ uploadCategory.single('image'), async (req, re
     try {
         const updates = {};
         if (req.body.name) updates.name = req.body.name;
-        if (Array.isArray(req.body.subcategories)) {
-            updates.subcategories = req.body.subcategories;
-        }
         if (req.file) {
             updates.image = `/uploads/categories/${req.file.filename}`;
         }
-        const category = await Category.findByIdAndUpdate(
+        let category = await Category.findByIdAndUpdate(
             req.params.id,
             { $set: updates }, // Use $set to update only the fields provided in the request body
             { new: true, runValidators: true } // Return the updated document
@@ -109,6 +116,23 @@ router.put('/:id', /* isAdmin, */ uploadCategory.single('image'), async (req, re
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
+        
+        if (req.body.subcategories) {
+            let subs = req.body.subcategories;
+            if (typeof subs === 'string') { subs = JSON.parse(subs); }
+            await Subcategory.deleteMany({ category: category._id });
+
+            const newSubs = await Promise.all(
+                subs.map(s =>
+                    Subcategory.create({ name: s, category: category._id })
+                )
+            );
+
+            category.subcategories = newSubs.map(s => s._id);
+            await category.save();
+        }
+
+        await category.populate('subcategories');
         res.status(200).json(category);
     } catch (error) {
         console.error('Update category error:', error);
@@ -127,6 +151,7 @@ router.delete('/:id', /* isAdmin, */async (req, res) => {
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
         }
+        await Subcategory.deleteMany({ category: category._id });
         res.status(200).json({ message: 'Category deleted successfully' });
     } catch (error) {
         console.error('Delete category error:', error);
