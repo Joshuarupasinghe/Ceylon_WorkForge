@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import LoginPage from './pages/login';  
+import LoginPage from './pages/Login';  
 import OauthSignUp from './pages/OauthSignUp';  
 import SignUp from './pages/SignUp'; 
 import ProfileForm from './pages/ProfileForm'; 
@@ -10,6 +10,11 @@ import LoadingScreen from './pages/Loading';
 import Layout from './components/Layout';
 import BlogPage from './pages/bloge';
 import FreelancePage from './pages/freelancepage';
+import AuthCallback from './pages/AuthCallback';
+import Freelancer from './pages/Freelancer';
+import SuperAdminDashboard from './pages/SuperAdmin';
+import ClientDashboard from './pages/ClientDashboard';
+import './index.css';
 
 
 function App() {
@@ -24,7 +29,13 @@ function App() {
         <Route path="/loading" element={<LoadingScreen />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
+<<<<<<< HEAD
         
+=======
+        <Route path="/free" element={<Freelancer />} />
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/client" element={<ClientDashboard />} />
+>>>>>>> 69eec21d035b34af1520e96fbe4c8abbac9bfb67
         
       </Route>
       
