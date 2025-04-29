@@ -54,8 +54,18 @@ router.use(passport.initialize());
 
 // Google Auth Routes
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  /**
+   * @route   GET /auth/google
+   * @desc    Initiate Google OAuth login
+   * @access  Public
+   */
   router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
+  /**
+   * @route   GET /auth/google/callback
+   * @desc    Google OAuth callback handler
+   * @access  Public
+   */
   router.get('/google/callback', 
     passport.authenticate('google', { session: false, failureRedirect: '/login' }),
     (req, res) => {
@@ -77,7 +87,11 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   });
 }
 
-// Signup Route
+/**
+ * @route   POST /auth/signup
+ * @desc    Register a new user
+ * @access  Public
+ */
 router.post('/signup', async (req, res) => {
   try {
     const { firstName, lastName, email, password, company, role } = req.body;
@@ -131,7 +145,11 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// Login Route
+/**
+ * @route   POST /auth/login
+ * @desc    Authenticate user and return token
+ * @access  Public
+ */
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -179,7 +197,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Token validation endpoint
+/**
+ * @route   GET /auth/user/me
+ * @desc    Get current authenticated user's data
+ * @access  Private
+ */
 router.get('/user/me', async (req, res) => {
   try {
     // Get token from Authorization header
@@ -230,5 +252,40 @@ router.get('/user/me', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+/**
+ * @route   PATCH /auth/user/become-freelancer
+ * @desc    Convert a client into a freelancer (and delete their client jobs)
+ * @access  Private
+ */
+router.patch(
+  '/user/become-freelancer',
+  async (req, res) => {
+    try {
+      // 1) update the user’s role
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        { role: 'freelancer' },
+        { new: true, runValidators: true }
+      );
+
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      // 2) delete all their client job requests
+      await Service.deleteMany({
+        createdBy: req.user.id,
+        type: 'request'
+      });
+
+      return res.json({
+        message: 'You are now a freelancer; your client jobs have been removed.',
+        user: { id: user._id, role: user.role }
+      });
+    } catch (err) {
+      console.error('Become freelancer error:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+  }
+);
 
 module.exports = router;
