@@ -15,8 +15,8 @@ import FreelancePage from './pages/freelancepage';
 import AuthCallback from './pages/AuthCallback';
 import Freelancer from './pages/Freelancer';
 import SuperAdminDashboard from './pages/superadmin/SuperAdmin';
-import ClientDashboard from './pages/client/ClientDashboard';
-import ClientProfile from './pages/client/ClientProfile';
+import ClientDashboard from './pages/clientUser/ClientDashboard';
+import ClientProfile from './pages/clientUser/ClientProfile';
 import './index.css';
 
 
