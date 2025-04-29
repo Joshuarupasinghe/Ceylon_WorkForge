@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Bell, Menu, CreditCard, Settings, User, Search, Calendar, ChevronRight, MessageSquare, Briefcase, Users } from "lucide-react";
+import BillingSettings from '../components/BillingSettings';
 
 export default function ClientDashboard() {
   const [activeTab, setActiveTab] = useState("projects");
@@ -129,10 +130,11 @@ export default function ClientDashboard() {
         {activeTab === "freelancers" && <Freelancers searchQuery={searchQuery} />}
         {activeTab === "messages" && <Messages />}
         {activeTab === "schedule" && <Schedule />}
-        {/* {activeTab === "payment" && <Payment />} */}
+        {activeTab === "payment" && <BillingSettings />}
       </main>
     </div>
   );
+
 }
 
 // Sidebar Item
