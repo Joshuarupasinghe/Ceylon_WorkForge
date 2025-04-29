@@ -32,7 +32,7 @@ export default function Footer() {
         {/* Top Section: Logo & Social */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <div className="flex items-center mb-4 md:mb-0">
-            <img src="/public/imges/Logo1.png" alt="HotelDesk Logo" width={140} height={160} />
+            <img src="/imges/Logo1.png" alt="HotelDesk Logo" width={140} height={160} />
             <span className="ml-3 text-2xl font-bold"></span>
           </div>
           <div className="flex space-x-4">

@@ -26,7 +26,7 @@ export default function SignUp1() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     try {
       const response = await authService.signup({
         ...formData,
@@ -35,7 +35,13 @@ export default function SignUp1() {
       
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      window.location.href = "/profile";
+      
+      // Redirect based on role
+      if (role === "freelancer") {
+        window.location.href = "/profile";
+      } else {
+        window.location.href = "/";
+      }
       
     } catch (err) {
       setError(
@@ -47,8 +53,6 @@ export default function SignUp1() {
       setLoading(false);
     }
   };
-
-  // Rest of your component remains the same...
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">

@@ -2,17 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const path = require('path'); // Add this import
+const path = require('path');
 const config = require('./config');
 const authRoutes = require('./routes/auth');
-const profileRoutes = require('./routes/profile'); // Add this import
+const profileRoutes = require('./routes/profile');
+const CategoryRoutes = require('./routes/CategoryRoutes');
+const ServiceRoutes = require('./routes/ServiceRoutes');
 
 // Initialize Express app
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 // Serve static files from the uploads directory
@@ -37,6 +39,13 @@ mongoose.connect(config.mongodbUri)
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api/profile', profileRoutes); // Add profile routes
+app.use('/api/categories', CategoryRoutes); // Add category routes
+app.use('/api/services', ServiceRoutes); // Add service routes
+
+
+// serve static uploads
+app.use('/uploads/categories', express.static(path.join(__dirname, 'uploads/categories')));
+app.use(express.json());
 
 // Basic route for testing
 app.get('/', (req, res) => {

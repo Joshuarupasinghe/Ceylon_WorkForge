@@ -1,61 +1,13 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { profileService } from '../services/api';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-const ProtectedRoute = ({ redirectPath = '/profile' }) => {
-  const [loading, setLoading] = useState(true);
-  const [hasProfile, setHasProfile] = useState(false);
-  
-  useEffect(() => {
-    const checkProfile = async () => {
-      try {
-        // Check if user is authenticated
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setLoading(false);
-          return;
-        }
-        
-        // Check if profile exists
-        const response = await profileService.getProfile();
-        setHasProfile(!!response.data);
-        setLoading(false);
-      } catch (error) {
-        // If 404, profile doesn't exist
-        if (error.response && error.response.status === 404) {
-          setHasProfile(false);
-        } else {
-          console.error("Error checking profile:", error);
-        }
-        setLoading(false);
-      }
-    };
-    
-    checkProfile();
-  }, []);
-  
-  if (loading) {
-    return <div>Loading...</div>; // Show loading indicator
-  }
-  
-  // If user has no profile, redirect to profile creation
-  if (!hasProfile) {
-    return <Navigate to={redirectPath} replace />;
-  }
-  
-  // If user has profile, render the child routes
-  return <Outlet />;
-};
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user } = useAuth();
 
-// Add PropTypes validation
-ProtectedRoute.propTypes = {
-  redirectPath: PropTypes.string
-};
+  if (!user) return <Navigate to="/login" />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" />;
 
-// Add default props
-ProtectedRoute.defaultProps = {
-  redirectPath: '/profile'
+  return children;
 };
 
 export default ProtectedRoute;
