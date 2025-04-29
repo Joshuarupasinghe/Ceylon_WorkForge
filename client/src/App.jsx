@@ -24,7 +24,7 @@ function App() {
         <Route path="/loading" element={<LoadingScreen />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
-       
+        
         
       </Route>
       
