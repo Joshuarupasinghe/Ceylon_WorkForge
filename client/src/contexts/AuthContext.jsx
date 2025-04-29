@@ -1,27 +1,36 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/api'; // Adjust the path if needed
+import { authService } from '../services/api';
 
 const AuthContext = createContext();
 
+// undefined = we haven’t checked yet
+// null      = we checked and there’s no user
+// {...}     = logged in user object
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser]       = useState(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check localStorage first
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      console.log('User role (from localStorage):', parsedUser.role);
+    const stored = localStorage.getItem('user');
+    if (stored) {
+      setUser(JSON.parse(stored));
+      setLoading(false);
     } else if (authService.isAuthenticated()) {
-      // Or fetch from API
       authService.getCurrentUser()
         .then(res => {
-          setUser(res.data);
-          console.log('User role (from API):', res.data.role);
-          localStorage.setItem('user', JSON.stringify(res.data));
+          setUser(res.data.user);
+          localStorage.setItem('user', JSON.stringify(res.data.user));
         })
-        .catch(() => setUser(null));
+        .catch(() => {
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      // not authenticated
+      setUser(null);
+      setLoading(false);
     }
   }, []);
 
@@ -32,11 +41,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Easy access hook
 export const useAuth = () => useContext(AuthContext);
