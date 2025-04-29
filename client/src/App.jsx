@@ -29,13 +29,10 @@ function App() {
         <Route path="/loading" element={<LoadingScreen />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="freelancer" element={<FreelancePage />} />
-<<<<<<< HEAD
         
-=======
         <Route path="/free" element={<Freelancer />} />
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
         <Route path="/client" element={<ClientDashboard />} />
->>>>>>> 69eec21d035b34af1520e96fbe4c8abbac9bfb67
         
       </Route>
       

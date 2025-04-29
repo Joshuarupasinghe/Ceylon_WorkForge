@@ -294,14 +294,14 @@ const HomePage = () => {
               </a>
             ))}
           </div>
-          <div className="mt-6 text-left">
+          {/* <div className="mt-6 text-left">
             <a href="#" className="text-teal-500 hover:text-teal-700 font-medium inline-flex items-center">
               More Categories
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 ml-1">
                 <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
               </svg>
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -313,7 +313,7 @@ const HomePage = () => {
             Sign Up or Login to Explore Various Features that our Sellers & Freelancers Experience. It's Just Free
           </p>
           <a href="#" className="bg-teal-500 hover:bg-teal-300 text-white font-bold py-2 px-4 rounded">
-            Get Started It's Free
+            Get Started It's Free.
           </a>
         </div>
         <div className="absolute inset-0 opacity-20">
@@ -356,7 +356,7 @@ const HomePage = () => {
                   <h3 className="text-xl font-semibold mb-2">{resource.title}</h3>
                   <p className="text-gray-600 mb-4">{resource.description}</p>
                   <button className="text-teal-500 font-semibold hover:text-teal-600">
-                    Learn More →
+                    
                   </button>
                 </div>
               </div>
