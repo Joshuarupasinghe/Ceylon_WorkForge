@@ -4,6 +4,39 @@ const isAuthenticated = require('../middleware/auth');
 const router = express.Router();
 
 /** ----------------------------------------
+ * @route   GET /api/services/summary
+ * @desc    Return dashboard counts for the logged-in user
+ * @access  Private
+ ------------------------------------------ */
+ router.get('/summary', isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // fetch all of this user's requests
+    const myRequests = await Service.find({ 
+      type: 'request', 
+      createdBy: userId 
+    });
+
+    const activeProjects  = myRequests.filter(p => p.status === 'In Progress').length;
+    const pendingTasks    = myRequests.filter(p => ['Planning','On Hold'].includes(p.status)).length;
+    const totalBudget     = myRequests.reduce((sum, p) => sum + (p.budget||0), 0);
+    const timeTracked     = myRequests.reduce((sum, p) => sum + (p.progress||0), 0); 
+    // we interpret `progress` (%) as “hours” for the demo
+
+    return res.json({
+      activeProjects,
+      pendingTasks,
+      totalBudget,
+      timeTracked
+    });
+  } catch (err) {
+    console.error('Dashboard summary error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+/** ----------------------------------------
  * @route   GET /api/services/offers
  * @desc    List all freelancer offers (type: 'offer')
  * @access  Public
