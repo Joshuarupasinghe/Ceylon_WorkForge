@@ -26,7 +26,7 @@ export default function SignUp1() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     try {
       const response = await authService.signup({
         ...formData,
@@ -35,7 +35,13 @@ export default function SignUp1() {
       
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      window.location.href = "/profile";
+      
+      // Redirect based on role
+      if (role === "freelancer") {
+        window.location.href = "/profile";
+      } else {
+        window.location.href = "/";
+      }
       
     } catch (err) {
       setError(
@@ -48,17 +54,15 @@ export default function SignUp1() {
     }
   };
 
-  // Rest of your component remains the same...
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl bg-white shadow-lg rounded-2xl overflow-hidden">
         {/* Left Section */}
         <div
           className="hidden md:flex flex-col justify-center items-start p-10 text-white bg-cover"
-          style={{ backgroundImage: "url('/imges/login.png')" }}
+          style={{ backgroundImage: "url('/imges/login1.png')" }}
         >
-          <h2 className="text-3xl font-bold mb-4">Design with us</h2>
+          <h2 className="text-3xl font-bold mb-4 text-black">Design with us</h2>
           <p className="text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
             lobortis maximus nunc, ac rhoncus odio congue quis. Sed ac semper

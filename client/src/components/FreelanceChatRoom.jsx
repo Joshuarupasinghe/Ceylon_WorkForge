@@ -110,7 +110,7 @@ const FreelanceChatRoom = () => {
     { id: 1, name: 'Josuwa Perera', project: 'Photography Project', messages: [
         { id: 1, sender: 'Client', text: 'Hi!', time: '10:30 AM' },
         { id: 2, sender: 'You', text: 'Hello! How can I help you?', time: '10:32 AM' },
-        { id: 3, sender: 'Client', text: 'I need some edits on my photos.', time: '10:35 AM' }
+        { id: 3, sender: 'Client', text: 'I need some edits on my photos and to photoshop.', time: '10:35 AM' }
       ]
     },
     { id: 2, name: 'Sara B', project: 'E-commerce Store', messages: [
